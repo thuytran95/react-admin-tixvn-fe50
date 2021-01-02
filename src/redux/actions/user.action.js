@@ -67,6 +67,7 @@ export const actLogout = (history) => {
 export const actTryLogin = (history) => {
   return (dispatch) => {
     if (!localStorage.getItem("UserAdmin")) {
+      history.push("/login");
       return;
     }
     const admin = JSON.parse(localStorage.getItem("UserAdmin"));
