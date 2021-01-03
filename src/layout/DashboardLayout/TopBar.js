@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { Link as RouterLink, useHistory, withRouter } from "react-router-dom";
+import { Link as RouterLink, withRouter } from "react-router-dom";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import {
@@ -25,13 +25,14 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
+const TopBar = (props) => {
+  // console.log(props);
+  const { onMobileNavOpen, fetchTryLogout } = props;
   const classes = useStyles();
   const [notifications] = useState([]);
-  const history = useHistory();
 
   return (
-    <AppBar className={clsx(classes.root, className)} elevation={0} {...rest}>
+    <AppBar className={clsx(classes.root)} elevation={0}>
       <Toolbar>
         <RouterLink to="/">
           <Logo />
@@ -49,7 +50,7 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
           </IconButton>
           <IconButton
             color="inherit"
-            onClick={() => rest.fetchTryLogout(history)}
+            onClick={() => fetchTryLogout(props.history)}
           >
             <InputIcon />
           </IconButton>

@@ -16,17 +16,7 @@ import styles from "../../assets/jss/admin-jss/components/movieItemStyle";
 const useStyles = makeStyles(styles);
 
 export default function MovieItem(props) {
-  const {
-    maPhim,
-    tenPhim,
-    biDanh,
-    hinhAnh,
-    trailer,
-    moTa,
-    maNhom,
-    ngayKhoiChieu,
-    danhGia,
-  } = props.movie;
+  const { tenPhim, hinhAnh, moTa, ngayKhoiChieu, danhGia } = props.movie;
   const classes = useStyles();
 
   return (

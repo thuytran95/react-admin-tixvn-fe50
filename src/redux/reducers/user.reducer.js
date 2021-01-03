@@ -7,6 +7,7 @@ import {
   ADMIN_LOGIN_FAILED,
   ADD_USER_SUCCESS,
   ADD_USER_FAILED,
+  DELETE_USER_SUCCESS,
 } from "../constants/user.constants.js";
 
 const initialState = {
@@ -39,12 +40,28 @@ const UserReducer = (state = initialState, action) => {
     case GET_USER_LIST_FAILED: {
       return { ...state, loading: false, userList: null, err: payload };
     }
+
     case ADD_USER_SUCCESS: {
-      const userList = state.userList.push(payload);
-      return { ...state, userList };
+      const userList = state.userList;
+
+      // tim xem co thanh phan trung nhau khong
+
+      userList.push(payload);
+      state.userList = userList;
+      return { ...state };
     }
-    case ADD_USER_FAILED:
+    case ADD_USER_FAILED: {
       return { ...state, errAdd: payload };
+    }
+    case DELETE_USER_SUCCESS: {
+      let userList = state.userList;
+      userList = userList.filter((item) => item.taiKhoan !== payload);
+      state.userList = userList;
+      // console.log(state.userList);
+
+      return { ...state };
+    }
+
     default:
       return { ...state };
   }

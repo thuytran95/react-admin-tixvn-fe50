@@ -1,7 +1,17 @@
 import { colors } from "@material-ui/core";
 
 const userPageStyle = (theme) => ({
-  root: {},
+  root: {
+    "& .MuiFormHelperText-root": {
+      color: colors.red[500],
+    },
+    "& .MuiTypography-h6": {
+      fontSize: "24px",
+      color: theme.palette.primary.main,
+      textTransform: "uppercase",
+      textAlign: "center",
+    },
+  },
   page: {
     backgroundColor: theme.palette.background.dark,
     minHeight: "100%",
@@ -14,6 +24,15 @@ const userPageStyle = (theme) => ({
 
   deleteIcon: {
     color: colors.red[500],
+  },
+
+  formControlRadio: {
+    display: "block",
+    marginTop: theme.spacing(1.5),
+  },
+  buttonGroup: {
+    display: "flex",
+    justifyContent: "flex-end",
   },
 });
 

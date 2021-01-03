@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { connect, useDispatch } from "react-redux";
-import { Typography, Box, Grid, makeStyles } from "@material-ui/core";
+import { Typography, Box, makeStyles } from "@material-ui/core";
 
 import { Loader } from "../../components/Loader";
 import MovieList from "../../components/MovieList";

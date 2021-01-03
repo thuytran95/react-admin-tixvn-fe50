@@ -49,9 +49,7 @@ const NavItem = ({ className, href, icon: Icon, title, ...rest }) => {
         to={href}
       >
         {Icon && <Icon className={classes.icon} size="20" />}
-        <span activeClassName={classes.active.title} className={classes.title}>
-          {title}
-        </span>
+        <span className={classes.title}>{title}</span>
       </Button>
     </ListItem>
   );

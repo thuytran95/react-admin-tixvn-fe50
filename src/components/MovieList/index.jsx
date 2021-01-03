@@ -1,23 +1,23 @@
-import React, { useState } from "react";
-import { Grid, makeStyles } from "@material-ui/core";
+import React from "react";
+import { Grid } from "@material-ui/core";
 import MovieItem from "../MovieItem";
-import styles from "../../assets/jss/admin-jss/components/movieListStyle";
+// import styles from "../../assets/jss/admin-jss/components/movieListStyle";
 
-const useStyles = makeStyles(styles);
+// const useStyles = makeStyles(styles);
 
 export default function MovieList(props) {
   const { movieList } = props;
   // console.log(movieList);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  // const [page, setPage] = useState(0);
+  // const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  // };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = (event) => {
+  //   setRowsPerPage(parseInt(event.target.value, 10));
+  //   setPage(0);
+  // };
 
   return (
     <div>

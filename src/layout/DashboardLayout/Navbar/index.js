@@ -55,7 +55,8 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Navbar = ({ onMobileClose, openMobile }) => {
+const Navbar = (props) => {
+  const { openMobile, onMobileClose } = props;
   const classes = useStyles();
   const location = useLocation();
   useEffect(() => {
@@ -71,8 +72,7 @@ const Navbar = ({ onMobileClose, openMobile }) => {
           <Avatar
             className={classes.avatar}
             component={RouterLink}
-            src={user.avatar}
-            to="/admin/dashboard"
+            to="/dashboard"
           />
           <Typography className={classes.name} color="textPrimary" variant="h5">
             {user.name}

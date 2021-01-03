@@ -1,5 +1,6 @@
 import { createAction } from ".";
 import { userService } from "../../service";
+import Axios from "axios";
 import {
   GET_USER_LIST_FAILED,
   GET_USER_LIST_SUCCESS,
@@ -10,6 +11,8 @@ import {
   ADMIN_CLEAR_DATA,
   ADD_USER_SUCCESS,
   ADD_USER_FAILED,
+  DELETE_USER_SUCCESS,
+  DELETE_USER_FAILED,
 } from "../constants/user.constants.js";
 import setHeaders from "../../utils/setHeaders";
 
@@ -67,6 +70,7 @@ export const actLogout = (history) => {
 export const actTryLogin = (history) => {
   return (dispatch) => {
     if (!localStorage.getItem("UserAdmin")) {
+      history.push("/login");
       return;
     }
     const admin = JSON.parse(localStorage.getItem("UserAdmin"));
@@ -75,22 +79,53 @@ export const actTryLogin = (history) => {
   };
 };
 
-export const addUserRequest = (data) => {
-  return (dispatch) => {
-    userService
-      .addUser(data)
-      .then((res) => {
-        if (!localStorage.getItem("UserAdmin")) {
-          return;
-        }
-        const admin = JSON.parse(localStorage.getItem("UseAdmin"));
-        setHeaders(admin.accessToken);
-        console.log(res);
-        dispatch(createAction(ADD_USER_SUCCESS, res.data));
-      })
-      .catch((err) => {
-        console.log(err);
-        dispatch(createAction(ADD_USER_FAILED, err));
+export const actAddUserRequest = (data) => {
+  return async function (dispatch) {
+    try {
+      const admin = JSON.parse(localStorage.getItem("UserAdmin"));
+      const res = await Axios({
+        method: "POST",
+        url:
+          "https://movie0706.cybersoft.edu.vn/api/QuanLyNguoiDung/ThemNguoiDung",
+        data,
+        headers: {
+          Authorization: `Bearer ${admin.accessToken}`,
+        },
       });
+
+      if (res.status === 200 || res.statu === 201) {
+        dispatch(createAction(ADD_USER_SUCCESS, data));
+        window.alert("Thêm người dùng thành công");
+      }
+    } catch (error) {
+      console.log(error);
+      window.alert(error.response.data);
+      dispatch(createAction(ADD_USER_FAILED, error));
+    }
   };
 };
+
+export const actDeleteUserRequest = (data) => {
+  return async function (dispatch) {
+    try {
+      const admin = JSON.parse(localStorage.getItem("UserAdmin"));
+      const res = await Axios({
+        method: "DELETE",
+        url: `https://movie0706.cybersoft.edu.vn/api/QuanLyNguoiDung/XoaNguoiDung?TaiKhoan=${data}`,
+        headers: {
+          Authorization: `Bearer ${admin.accessToken}`,
+        },
+      });
+      if (res.status === 200 || res.statu === 201) {
+        window.alert("Xóa thành công!");
+        dispatch(createAction(DELETE_USER_SUCCESS, data));
+      }
+    } catch (err) {
+      console.log(err);
+      window.alert(err.response.data);
+      dispatch(createAction(DELETE_USER_FAILED, err));
+    }
+  };
+};
+
+// export const actUpdate

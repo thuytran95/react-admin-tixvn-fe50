@@ -1,14 +1,5 @@
-import "./App.css";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import {
-  BrowserRouter,
-  Route,
-  Switch,
-  Redirect,
-  withRouter,
-} from "react-router-dom";
+import { Route, Switch, withRouter } from "react-router-dom";
 import Login from "./pages/Login";
-
 import PageNotFound from "./pages/PageNotFound";
 import DashboardLayout from "./layout/DashboardLayout";
 import { routeAdmin } from "./routes";

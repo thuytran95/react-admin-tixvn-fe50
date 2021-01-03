@@ -2,7 +2,8 @@ const PREFIX = "USER";
 
 export const ADD_USER_SUCCESS = "ADD_USER_SUCCESS";
 export const ADD_USER_FAILED = "ADD_USER_FAILED";
-export const DELETE_USER = `${PREFIX}_DELETE`;
+export const DELETE_USER_SUCCESS = "DELETE_USER_SUCCESS";
+export const DELETE_USER_FAILED = "DELETE_USER_FAILED";
 export const SAVE_USER = `${PREFIX}_SAVE`;
 export const UPDATE_USER = `${PREFIX}_UPDATE`;
 export const SEARCH_USER = `${PREFIX}_SEARCH`;
