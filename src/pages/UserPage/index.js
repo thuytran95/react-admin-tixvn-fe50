@@ -7,6 +7,7 @@ import { Loader } from "../../components/Loader";
 import {
   actAddUserRequest,
   actDeleteUserRequest,
+  actUpdateUserRequest,
   getUserListRequest,
 } from "../../redux/actions/user.action";
 import {
@@ -84,7 +85,7 @@ function UserPage(props) {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
-    setTitleModal({ header: "Thêm người dùng", action: "THÊM" });
+    setTitleModal({ header: "Thêm người dùng", action: "Thêm" });
     setOpen(true);
   };
 
@@ -103,21 +104,15 @@ function UserPage(props) {
   };
 
   const handleSubmit = (values) => {
-    // console.log(values);
-    //tim vi tri phan tu
-    const findIndex = userList.findIndex(
-      (user) => user.taiKhoan === values.taiKhoan
-    );
     dispatch(actAddUserRequest(values));
-    // console.log(findIndex);
-    // if (findIndex !== -1) {
-    // } else {
-    //   setOpen(false);
-    // }
+    setOpen(false);
+  };
 
-    if (errAdd) {
-      setOpen(false);
-    }
+  const handleSubmitUpdate = (values) => {
+    // console.log(values);
+
+    dispatch(actUpdateUserRequest(values));
+    setOpen(false);
   };
 
   const handleDelete = (values) => {
@@ -260,7 +255,9 @@ function UserPage(props) {
           <Formik
             initialValues={initialValue}
             validationSchema={signUpUserSchema}
-            onSubmit={handleSubmit}
+            onSubmit={
+              titleModal.action === "Thêm" ? handleSubmit : handleSubmitUpdate
+            }
           >
             {(formikProps) => (
               <Form className={classes.root}>
@@ -322,23 +319,47 @@ function UserPage(props) {
                   required
                   value={initialValue.maNhom}
                 />
-                <div className={classes.buttonGroup}>
-                  <Button type="submit" color="primary" variant="contained">
-                    {titleModal.action}
-                  </Button>
-
-                  <Button
-                    style={{
-                      marginLeft: 10,
-                      backgroundColor: colors.red[500],
-                      color: "white",
-                    }}
-                    onClick={handleClose}
-                    variant="contained"
-                  >
-                    Thoát
-                  </Button>
-                </div>
+                <>
+                  {titleModal.action === "Thêm" ? (
+                    <div className={classes.buttonGroup}>
+                      <Button
+                        type="submit"
+                        color="secondary"
+                        variant="contained"
+                      >
+                        Thêm
+                      </Button>
+                      <Button
+                        style={{
+                          marginLeft: 10,
+                          backgroundColor: colors.red[500],
+                          color: "white",
+                        }}
+                        onClick={handleClose}
+                        variant="contained"
+                      >
+                        Thoát
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className={classes.buttonGroup}>
+                      <Button type="submit" color="primary" variant="contained">
+                        CẬP NHẬT
+                      </Button>
+                      <Button
+                        style={{
+                          marginLeft: 10,
+                          backgroundColor: colors.red[500],
+                          color: "white",
+                        }}
+                        onClick={handleClose}
+                        variant="contained"
+                      >
+                        Thoát
+                      </Button>
+                    </div>
+                  )}
+                </>
               </Form>
             )}
           </Formik>

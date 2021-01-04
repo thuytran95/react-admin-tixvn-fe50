@@ -44,8 +44,6 @@ const UserReducer = (state = initialState, action) => {
     case ADD_USER_SUCCESS: {
       const userList = state.userList;
 
-      // tim xem co thanh phan trung nhau khong
-
       userList.push(payload);
       state.userList = userList;
       return { ...state };

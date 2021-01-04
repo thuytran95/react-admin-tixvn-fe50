@@ -13,6 +13,8 @@ import {
   ADD_USER_FAILED,
   DELETE_USER_SUCCESS,
   DELETE_USER_FAILED,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_FAILED,
 } from "../constants/user.constants.js";
 import setHeaders from "../../utils/setHeaders";
 
@@ -128,4 +130,27 @@ export const actDeleteUserRequest = (data) => {
   };
 };
 
-// export const actUpdate
+export const actUpdateUserRequest = (data) => {
+  return async function (dispatch) {
+    try {
+      const admin = JSON.parse(localStorage.getItem("UserAdmin"));
+      const res = await Axios({
+        method: "PUT",
+        url:
+          "https://movie0706.cybersoft.edu.vn/api/QuanLyNguoiDung/CapNhatThongTinNguoiDung",
+        headers: {
+          Authorization: `Bearer ${admin.accessToken}`,
+        },
+        data,
+      });
+
+      if (res.status === 200 || res.status === 201) {
+        window.alert("Cập nhật thành công");
+        dispatch(createAction(UPDATE_USER_SUCCESS, res.data));
+      }
+    } catch (err) {
+      window.alert(err.response.data);
+      dispatch(createAction(UPDATE_USER_FAILED, err));
+    }
+  };
+};
