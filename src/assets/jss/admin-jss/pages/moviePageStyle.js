@@ -5,6 +5,9 @@ const moviePageStyle = (theme) => ({
     paddingBottom: theme.spacing(3),
     paddingTop: theme.spacing(3),
   },
+  movieCard: {
+    height: "100%",
+  },
 });
 
 export default moviePageStyle;

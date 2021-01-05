@@ -48,7 +48,7 @@ const Toolbar = ({ handleClickOpen, className, ...rest }) => {
                 className={classes.button}
                 color="primary"
                 variant="contained"
-                // onClick={handleClickOpen}
+                onClick={handleClickOpen}
               >
                 <AddIcon />
               </Button>

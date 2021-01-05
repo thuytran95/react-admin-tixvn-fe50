@@ -32,6 +32,7 @@ const movieCardStyle = (theme) => ({
     justifyContent: "space-between",
   },
   description: {
+    height: " 60px",
     textAlign: "justify",
     padding: " 0 5px 0 0",
     lineHeight: "20px",
@@ -39,7 +40,6 @@ const movieCardStyle = (theme) => ({
     webkitLineClamp: 2,
     overFlow: "hidden",
     textOverflow: "ellipsis",
-    height: " 55px",
   },
 });
 

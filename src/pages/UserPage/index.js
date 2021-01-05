@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect, useDispatch } from "react-redux";
 import { Formik, Form } from "formik";
-import { FormikTextField } from "./FormikTextField";
-import { FormikSelect } from "./FormikSelect";
 import { Loader } from "../../components/Loader";
 import {
   actAddUserRequest,
@@ -33,11 +31,13 @@ import { Page } from "../../assets/jss/admin-jss/Page";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { capitalizeWords } from "../../utils";
-import styles from "../../assets/jss/admin-jss/pages/userPageStyle";
 import Toolbar from "./Toolbar";
 import { signUpUserSchema } from "../../service/user.service";
 import { dataSelect, radioList } from "./dataSelect";
-import { FormikRadioGroup } from "./FormikRadioGroup";
+import { FormikRadioGroup } from "../../components/FormilkCustomLayout/FormikRadioGroup";
+import { FormikTextField } from "../../components/FormilkCustomLayout/FormikTextField";
+import { FormikSelect } from "../../components/FormilkCustomLayout/FormikSelect";
+import styles from "../../assets/jss/admin-jss/pages/userPageStyle";
 
 const useStyles = makeStyles(styles);
 

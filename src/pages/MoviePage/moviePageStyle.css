@@ -1,0 +1,39 @@
+.pagination {
+  width: 20%;
+  margin: 0;
+  display: flex;
+  padding: 0;
+  flex-wrap: wrap;
+  list-style: none;
+  align-items: center;
+  justify-content: space-around;
+  list-style: none;
+}
+
+.pagination li {
+  cursor: pointer;
+}
+
+.pagination__link {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.pagination__link--active {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #2c387e;
+  color: white;
+  cursor: pointer;
+}
+
+a {
+  outline: none;
+  line-height: 30px;
+}
