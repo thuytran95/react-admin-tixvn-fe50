@@ -1,29 +1,30 @@
-const movieItemStyle = (theme) => ({
+import { colors } from "@material-ui/core";
+
+const movieCardStyle = (theme) => ({
   root: {
-    maxWidth: 345,
     overflow: "hidden",
   },
   media: {
     height: 280,
   },
   typography: {
-    color: theme.palette.subColor,
+    color: colors.amber[700],
     padding: "5px 0 0 0",
   },
   deleteIcon: {
-    color: theme.palette.red,
+    color: colors.red[700],
   },
   textAlign: {
     textAlign: "justify",
   },
   typography_h2: {
-    lineHeight: "25px",
+    fontWeight: 700,
+    height: "30px",
+    lineHeight: "20px",
     display: "-webkit-box",
     webkitLineClamp: 2,
     overFlow: "hidden",
     textOverflow: "ellipsis",
-    height: "50px",
-    marginBottom: "10px",
   },
 
   cardActions: {
@@ -39,8 +40,7 @@ const movieItemStyle = (theme) => ({
     overFlow: "hidden",
     textOverflow: "ellipsis",
     height: " 55px",
-    marginBottom: "30px",
   },
 });
 
-export default movieItemStyle;
+export default movieCardStyle;

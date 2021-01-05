@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
-import MovieItem from "../MovieItem";
+import MovieCard from "../MovieCard";
 // import styles from "../../assets/jss/admin-jss/components/movieListStyle";
 
 // const useStyles = makeStyles(styles);
@@ -25,7 +25,7 @@ export default function MovieList(props) {
         {movieList.map((movie, index) => {
           return (
             <Grid item sm={6} md={4} lg={3} key={index}>
-              <MovieItem movie={movie} />
+              <MovieCard movie={movie} />
             </Grid>
           );
         })}

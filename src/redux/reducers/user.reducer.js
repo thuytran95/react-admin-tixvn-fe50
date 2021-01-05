@@ -8,6 +8,8 @@ import {
   ADD_USER_SUCCESS,
   ADD_USER_FAILED,
   DELETE_USER_SUCCESS,
+  DELETE_USER_FAILED,
+  UPDATE_USER_SUCCESS,
 } from "../constants/user.constants.js";
 
 const initialState = {
@@ -17,6 +19,7 @@ const initialState = {
   admin: null,
   errLogin: null,
   errAdd: null,
+  errDelete: null,
 };
 
 const UserReducer = (state = initialState, action) => {
@@ -40,10 +43,8 @@ const UserReducer = (state = initialState, action) => {
     case GET_USER_LIST_FAILED: {
       return { ...state, loading: false, userList: null, err: payload };
     }
-
     case ADD_USER_SUCCESS: {
       const userList = state.userList;
-
       userList.push(payload);
       state.userList = userList;
       return { ...state };
@@ -59,7 +60,23 @@ const UserReducer = (state = initialState, action) => {
 
       return { ...state };
     }
+    case DELETE_USER_FAILED:
+      return { ...state, errDelete: payload };
+    case UPDATE_USER_SUCCESS: {
+      const userList = state.userList;
 
+      // tim vi tri phan tu update
+      const index = userList.findIndex(
+        (user) => user.taiKhoan === payload.taiKhoan
+      );
+      // console.log(index);
+      if (index !== -1) {
+        userList[index] = payload;
+      }
+      state.userList = userList;
+      // console.log(userList);
+      return { ...state };
+    }
     default:
       return { ...state };
   }

@@ -29,7 +29,7 @@ import {
   colors,
 } from "@material-ui/core";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import Page from "../../assets/jss/admin-jss/Page";
+import { Page } from "../../assets/jss/admin-jss/Page";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { capitalizeWords } from "../../utils";
@@ -124,7 +124,7 @@ function UserPage(props) {
     if (loading) return <Loader />;
     if (userList)
       return (
-        <Page className={classes.page} title="User page">
+        <Page className={classes.page} title="Users">
           <Container maxWidth={false}>
             <Toolbar handleClickOpen={handleClickOpen} />
             <Box mt={3}>

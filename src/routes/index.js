@@ -1,6 +1,6 @@
 import Dashboard from "../pages/Dashboard";
-import MoviePage from "../pages/MoviePage";
 import UserPage from "../pages/UserPage";
+import MoviePage from "../pages/MoviePage";
 
 const routeAdmin = [
   { exact: true, path: "/", component: Dashboard },
