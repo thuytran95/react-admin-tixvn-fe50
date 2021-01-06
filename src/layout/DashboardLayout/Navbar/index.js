@@ -36,6 +36,11 @@ const items = [
     icon: Movie,
     title: "Quản lý phim",
   },
+  {
+    href: "/movie-schedule",
+    icon: Movie,
+    title: "Quản lý lịch chiếu phim",
+  },
 ];
 
 const useStyles = makeStyles(() => ({
