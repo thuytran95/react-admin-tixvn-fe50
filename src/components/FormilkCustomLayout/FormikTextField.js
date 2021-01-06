@@ -22,3 +22,21 @@ export const FormikTextField = (props) => {
     />
   );
 };
+
+export const FormikTextFieldMultiline = (props) => {
+  const { name, label, rows, required = false, type } = props;
+
+  return (
+    <Field
+      required={required}
+      as={TextField}
+      label={label}
+      name={name}
+      type={type}
+      fullWidth
+      multiline
+      rows={rows}
+      helperText={<ErrorMessage style={{ color: "green" }} name={name} />}
+    />
+  );
+};

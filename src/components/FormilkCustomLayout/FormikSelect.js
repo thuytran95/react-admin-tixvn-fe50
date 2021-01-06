@@ -16,7 +16,6 @@ const SelectField = ({
   name,
   onChange,
   onBlur,
-  required,
 }) => {
   return (
     <FormControl style={{ display: "block" }}>

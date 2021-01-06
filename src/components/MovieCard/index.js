@@ -21,6 +21,7 @@ const useStyles = makeStyles(movieCardStyle);
 const MovieCard = (props) => {
   const { className, movie } = props;
   const { tenPhim, hinhAnh, moTa, ngayKhoiChieu, danhGia } = movie;
+
   const classes = useStyles();
   return (
     <Card className={clsx(classes.root, className)}>

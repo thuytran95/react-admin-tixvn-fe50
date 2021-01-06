@@ -16,17 +16,20 @@ import { Page } from "../../assets/jss/admin-jss/Page";
 import { Loader } from "../../components/Loader";
 import Toolbar from "./Toolbar";
 import { getMovieListRequest } from "../../redux/actions/movie.action";
-import styles from "../../assets/jss/admin-jss/pages/moviePageStyle";
 import MovieCard from "../../components/MovieCard";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
-import styleCss from "./moviePageStyle.css";
-import { signUpUserSchema } from "../../service/user.service";
-import { FormikTextField } from "../../components/FormilkCustomLayout/FormikTextField";
-import { Form, Formik } from "formik";
-import { FormikRadioGroup } from "../../components/FormilkCustomLayout/FormikRadioGroup";
+import { movieSchema } from "../../service/movie.service";
+import {
+  FormikTextField,
+  FormikTextFieldMultiline,
+} from "../../components/FormilkCustomLayout/FormikTextField";
+import { Field, Form, Formik, ErrorMessage } from "formik";
 import { FormikSelect } from "../../components/FormilkCustomLayout/FormikSelect";
 import { dataSelect } from "../UserPage/dataSelect";
+import styles from "../../assets/jss/admin-jss/pages/moviePageStyle";
+import styleCss from "./moviePageStyle.css";
+import CustomImageInput from "../../components/FormilkCustomLayout/CustomImageInput/CustomImageInput";
 
 const useStyles = makeStyles(styles);
 
@@ -69,6 +72,23 @@ const MoviePage = (props) => {
     setCurrentPage(selectedPage);
   };
 
+  // xử lý form thêm phim
+  const [initialValues, setInitialValues] = useState({
+    maPhim: 0,
+    tenPhim: "",
+    biDanh: "",
+    trailer: "",
+    hinhAnh: {},
+    moTa: "",
+    maNhom: "GP01",
+    ngayKhoiChieu: "",
+    danhGia: 0,
+  });
+  const handleSubmit = (values) => {
+    console.log(values);
+    console.log(values.hinhAnh);
+  };
+
   const renderHTML = () => {
     if (loading) return <Loader />;
     if (movieList) {
@@ -101,7 +121,9 @@ const MoviePage = (props) => {
               scroll="body"
               aria-labelledby="form-dialog-title"
             >
-              <DialogTitle id="form-dialog-title">Thêm phim</DialogTitle>
+              <DialogTitle id="form-dialog-title" className={classes.root}>
+                Thêm phim
+              </DialogTitle>
               <DialogContent>
                 <Formik
                   initialValues={{
@@ -109,113 +131,247 @@ const MoviePage = (props) => {
                     tenPhim: "",
                     biDanh: "",
                     trailer: "",
-                    hinhAnh: "",
+                    hinhAnh: undefined,
                     moTa: "",
-                    maNhom: "",
+                    maNhom: "GP01",
                     ngayKhoiChieu: "",
                     danhGia: 0,
                   }}
-                  validationSchema={signUpUserSchema}
+                  validationSchema={movieSchema}
+                  onSubmit={handleSubmit}
                 >
-                  {(formikProps) => (
-                    <Form>
-                      <Grid container style={{ width: "100%" }} spacing={2}>
-                        <Grid item xs={12}>
-                          <FormikTextField
+                  {(formikProps) => {
+                    // console.log(formikProps);
+                    return (
+                      <Form>
+                        <div className="form-group">
+                          <label>Mã phim</label>
+                          <Field
                             name="maPhim"
-                            label="Mã phim"
-                            type="text"
-                            onChange={formikProps.onChange}
+                            className="form-control"
+                            onChange={formikProps.handleChange}
                           />
-                        </Grid>
-                        <Grid item xs={12}>
-                          <FormikTextField
-                            onChange={formikProps.onChange}
+                          <ErrorMessage name="maPhim">
+                            {(message) => (
+                              <div className="alert text-danger alert-validation ">
+                                {message}
+                              </div>
+                            )}
+                          </ErrorMessage>
+                        </div>
+                        <div className="form-group">
+                          <label>Tên phim</label>
+                          <Field
                             name="tenPhim"
-                            label="Tên phim"
-                            type="text"
+                            className="form-control"
+                            onChange={formikProps.handleChange}
                           />
-                        </Grid>
-                        <Grid item xs={12}>
-                          <FormikTextField
-                            onChange={formikProps.onChange}
+                          <ErrorMessage name="tenPhim">
+                            {(message) => (
+                              <div className="alert text-danger alert-validation ">
+                                {message}
+                              </div>
+                            )}
+                          </ErrorMessage>
+                        </div>
+                        <div className="form-group">
+                          <label>Bí danh</label>
+                          <Field
                             name="biDanh"
-                            label="Bí danh"
-                            type="text"
+                            className="form-control"
+                            onChange={formikProps.handleChange}
                           />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                          <FormikTextField
-                            onChange={formikProps.onChange}
+                          <ErrorMessage name="biDanh">
+                            {(message) => (
+                              <div className="alert text-danger alert-validation ">
+                                {message}
+                              </div>
+                            )}
+                          </ErrorMessage>
+                        </div>
+                        <div className="form-group">
+                          <label>Trailer</label>
+                          <Field
                             name="trailer"
-                            label="Trailer"
-                            type="text"
+                            className="form-control"
+                            onChange={formikProps.handleChange}
                           />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                          <FormikTextField
-                            onChange={formikProps.onChange}
+                          <ErrorMessage name="trailer">
+                            {(message) => (
+                              <div className="alert text-danger alert-validation ">
+                                {message}
+                              </div>
+                            )}
+                          </ErrorMessage>
+                        </div>
+                        <div className="form-group">
+                          <label>Hình ảnh</label>
+                          <Field
                             name="hinhAnh"
-                            label="Hình ảnh"
-                            type="file"
+                            component={CustomImageInput}
+                            tilte="Hình ảnh"
+                            touched={formikProps.touched["file"]}
+                            setFieldValue={formikProps.setFieldValue}
+                            onBlur={formikProps.handleBlur}
                           />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                          <FormikTextField
-                            onChange={formikProps.onChange}
+                          <ErrorMessage name="hinhAnh">
+                            {(message) => (
+                              <div className="alert text-danger alert-validation ">
+                                {message}
+                              </div>
+                            )}
+                          </ErrorMessage>
+                        </div>
+                        <div className="form-group">
+                          <label>Mô tả</label>
+                          <Field
+                            as="textarea"
                             name="moTa"
-                            label="Mô tả"
                             type="text"
+                            className="form-control"
+                            onChange={formikProps.handleChange}
                           />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                          <FormikTextField
-                            onChange={formikProps.onChange}
+                          <ErrorMessage name="moTa">
+                            {(message) => (
+                              <div className="alert text-danger alert-validation ">
+                                {message}
+                              </div>
+                            )}
+                          </ErrorMessage>
+                        </div>
+                        <div className="form-group">
+                          <label>Ngày khởi chiếu</label>
+                          <Field
+                            type="text"
                             name="ngayKhoiChieu"
-                            label="Ngày khởi chiếu"
-                            type="text"
+                            className="form-control"
+                            onChange={formikProps.handleChange}
                           />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                          <FormikTextField
-                            onChange={formikProps.onChange}
-                            name="danhGia"
-                            label="Đánh giá"
-                            type="text"
+                          <ErrorMessage name="ngayKhoiChieu">
+                            {(message) => (
+                              <div className="alert text-danger alert-validation ">
+                                {message}
+                              </div>
+                            )}
+                          </ErrorMessage>
+                        </div>
+                        <div className="form-group">
+                          <label>Mã nhóm</label>
+                          <Field
+                            name="maNhom"
+                            value="GP01"
+                            className="form-control"
+                            onChange={formikProps.handleChange}
                           />
+                          <ErrorMessage name="maNhom">
+                            {(message) => (
+                              <div className="alert text-danger alert-validation ">
+                                {message}
+                              </div>
+                            )}
+                          </ErrorMessage>
+                        </div>
+
+                        {/* <Grid container style={{ width: "100%" }} spacing={2}>
+                          <Grid item xs={12}>
+                            <FormikTextField
+                              name="maPhim"
+                              label="Mã phim"
+                              type="text"
+                              onChange={formikProps.onChange}
+                            />
+                          </Grid>
+                          <Grid item xs={12}>
+                            <FormikTextField
+                              onChange={formikProps.onChange}
+                              name="tenPhim"
+                              label="Tên phim"
+                              type="text"
+                            />
+                          </Grid>
+                          <Grid item xs={12}>
+                            <FormikTextField
+                              onChange={formikProps.onChange}
+                              name="biDanh"
+                              label="Bí danh"
+                              type="text"
+                            />
+                          </Grid>
+                          <Grid item xs={12}>
+                            <FormikTextField
+                              onChange={formikProps.onChange}
+                              name="trailer"
+                              label="Trailer"
+                              type="text"
+                            />
+                          </Grid>
+                          <Grid item xs={12}>
+                            <FormikTextField
+                              onChange={formikProps.onChange}
+                              name="hinhAnh"
+                              label="Hình ảnh"
+                              type="file"
+                            />
+                          </Grid>
+                          <Grid item xs={12}>
+                            <FormikTextFieldMultiline
+                              onChange={formikProps.onChange}
+                              name="moTa"
+                              label="Mô tả"
+                              type="text"
+                              multiline
+                              rows={4}
+                            />
+                          </Grid>
+                          <Grid item xs={12}>
+                            <FormikTextField
+                              onChange={formikProps.onChange}
+                              name="ngayKhoiChieu"
+                              label="Ngày khởi chiếu"
+                              type="text"
+                            />
+                          </Grid>
+                          <Grid item xs={12}>
+                            <FormikTextField
+                              onChange={formikProps.onChange}
+                              name="danhGia"
+                              label="Đánh giá"
+                              type="number"
+                            />
+                          </Grid>
                         </Grid>
-                      </Grid>
 
-                      <FormikSelect
-                        onChange={formikProps.onChange}
-                        name="maNhom"
-                        items={dataSelect}
-                        label="Mã nhóm"
-                        required
-                      />
+                        <FormikSelect
+                          onChange={formikProps.onChange}
+                          name="maNhom"
+                          items={dataSelect}
+                          label="Mã nhóm"
+                          required
+                        /> */}
 
-                      <div>
-                        <Button
-                          type="submit"
-                          color="secondary"
-                          variant="contained"
-                        >
-                          Thêm
-                        </Button>
-                        <Button
-                          style={{
-                            marginLeft: 10,
-                            backgroundColor: colors.red[500],
-                            color: "white",
-                          }}
-                          variant="contained"
-                          onClick={handleClose}
-                        >
-                          Thoát
-                        </Button>
-                      </div>
-                    </Form>
-                  )}
+                        <div className={classes.buttonGroup}>
+                          <Button
+                            type="submit"
+                            color="secondary"
+                            variant="contained"
+                          >
+                            Thêm
+                          </Button>
+                          <Button
+                            style={{
+                              marginLeft: 10,
+                              backgroundColor: colors.red[500],
+                              color: "white",
+                            }}
+                            variant="contained"
+                            onClick={handleClose}
+                          >
+                            Thoát
+                          </Button>
+                        </div>
+                      </Form>
+                    );
+                  }}
                 </Formik>
               </DialogContent>
             </Dialog>
