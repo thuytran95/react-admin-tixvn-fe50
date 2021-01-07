@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Avatar, Typography } from "@material-ui/core";
+import { Error, Folder } from "@material-ui/icons";
+import Icon from "@material-ui/core/Icon";
 import withStyles from "@material-ui/core/styles/withStyles";
 import customImageInputStyle from "./CustomImageInputStyle";
 import classnames from "classnames";
@@ -40,15 +42,20 @@ class CustomImageInput extends Component {
   }
 
   showPreloadImage() {
-    const { classes } = this.props;
+    const { errorMessage, classes } = this.props;
     const { file, imagePreviewUrl } = this.state;
 
     let comp = null;
-    if (file) {
+    if (errorMessage) {
+      comp = <Error style={{ fontSize: 36 }} />;
+    } else if (file) {
       comp = (
         <img className={classes.avatarThumb} src={imagePreviewUrl} alt="Phim" />
       );
+    } else {
+      comp = <Folder style={{ fontSize: 36 }} />;
     }
+    return comp;
   }
 
   componentDidMount() {

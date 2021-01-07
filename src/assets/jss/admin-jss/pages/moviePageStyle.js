@@ -1,3 +1,5 @@
+import { colors } from "@material-ui/core";
+
 const moviePageStyle = (theme) => ({
   root: {
     minHeight: "100%",
@@ -8,6 +10,9 @@ const moviePageStyle = (theme) => ({
       color: theme.palette.primary.main,
       textTransform: "uppercase",
       textAlign: "center",
+    },
+    "& .MuiFormHelperText-root": {
+      color: colors.red[500],
     },
   },
   movieCard: {

@@ -18,7 +18,8 @@ export const FormikTextField = (props) => {
       name={name}
       type={type}
       fullWidth
-      helperText={<ErrorMessage style={{ color: "green" }} name={name} />}
+      variant="outlined"
+      helperText={<ErrorMessage name={name} />}
     />
   );
 };
@@ -36,7 +37,7 @@ export const FormikTextFieldMultiline = (props) => {
       fullWidth
       multiline
       rows={rows}
-      helperText={<ErrorMessage style={{ color: "green" }} name={name} />}
+      helperText={<ErrorMessage name={name} />}
     />
   );
 };

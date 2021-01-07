@@ -19,12 +19,7 @@ export const movieSchema = yup.object().shape({
     ),
 
   moTa: yup.string().required("*Field is required"),
-  ngayKhoiChieu: yup
-    .date()
-    .required("*Field is required")
-    .default(function () {
-      return new Date();
-    }),
+  ngayKhoiChieu: yup.date().required("*Field is required").nullable(),
   danhGia: yup.number().integer().positive().default(0),
   maNhom: yup.string().required("*Field is required"),
 });
@@ -35,6 +30,15 @@ class MovieService {
       method: "GET",
       url:
         " https://movie0706.cybersoft.edu.vn/api/QuanLyPhim/LayDanhSachPhim?maNhom=GP10",
+    });
+  }
+
+  addMovie(data) {
+    return Axios({
+      method: "POST",
+      url:
+        "https://movie0706.cybersoft.edu.vn/api/QuanLyPhim/ThemPhimUploadHinh",
+      data,
     });
   }
 }
