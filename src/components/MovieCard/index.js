@@ -15,12 +15,19 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { capitalizeWords } from "../../utils";
 import format from "date-format";
 import movieCardStyle from "../../assets/jss/admin-jss/components/movieCardStyle";
+import { useDispatch } from "react-redux";
+import { actDeleteMovieRequest } from "../../redux/actions/movie.action";
 
 const useStyles = makeStyles(movieCardStyle);
 
 const MovieCard = (props) => {
   const { className, movie } = props;
-  const { tenPhim, hinhAnh, moTa, ngayKhoiChieu, danhGia } = movie;
+  const { tenPhim, hinhAnh, moTa, ngayKhoiChieu, danhGia, maPhim } = movie;
+
+  const dispatch = useDispatch();
+  const handleDelete = (id) => {
+    dispatch(actDeleteMovieRequest(id));
+  };
 
   const classes = useStyles();
   return (
@@ -67,7 +74,14 @@ const MovieCard = (props) => {
         <Button size="small" color="primary">
           <CreateIcon />
         </Button>
-        <Button className={classes.deleteIcon} size="small">
+        <Button
+          className={classes.deleteIcon}
+          size="small"
+          onClick={() => {
+            console.log(maPhim);
+            handleDelete(maPhim);
+          }}
+        >
           <DeleteIcon />
         </Button>
       </CardActions>

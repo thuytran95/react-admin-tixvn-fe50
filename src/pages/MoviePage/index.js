@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import format from "date-format";
 import { connect, useDispatch } from "react-redux";
 import ReactPaginate from "react-paginate";
 import {
@@ -33,7 +34,6 @@ import { Field, Form, Formik, ErrorMessage } from "formik";
 import styles from "../../assets/jss/admin-jss/pages/moviePageStyle";
 import styleCss from "./moviePageStyle.css";
 import CustomImageInput from "../../components/FormilkCustomLayout/CustomImageInput/CustomImageInput";
-import { FormikDatePicker } from "../../components/FormilkCustomLayout/FormikDatePicker";
 import { FormikTextField } from "../../components/FormilkCustomLayout/FormikTextField";
 
 const useStyles = makeStyles(styles);
@@ -93,15 +93,21 @@ const MoviePage = (props) => {
     // console.log(values);
     // console.log(values.hinhAnh.name);
 
-    console.log(values);
-
-    // chuyen doi sang form data
+    // chuyen doi sang form data --> yeu cau tren api
     let form_data = new FormData();
     for (let key in values) {
-      form_data.append(key, values[key]);
+      // format ngay chieu ve dung dinh dang tren api
+      if (key === "ngayKhoiChieu") {
+        const formatDate = format("dd/MM/yyyy", new Date(values[key]));
+        console.log(formatDate);
+        form_data.append(key, formatDate);
+      } else {
+        form_data.append(key, values[key]);
+      }
     }
     // console.log(form_data);
     dispatch(actAddMovieRequest(form_data));
+    setOpen(false);
   };
 
   const renderHTML = () => {
@@ -127,6 +133,7 @@ const MoviePage = (props) => {
                 nextLinkClassName={"pagination__link"}
                 disabledClassName={"pagination__link--disabled"}
                 activeClassName={"pagination__link--active"}
+                style={{ width: "50%" }}
               />
             </Box>
             <Dialog
@@ -150,7 +157,7 @@ const MoviePage = (props) => {
                     hinhAnh: undefined,
                     moTa: "",
                     maNhom: "GP01",
-                    ngayKhoiChieu: null, // if date is defiend as '' yup will throw a invalid date error
+                    ngayKhoiChieu: null, // if date is defined as '' yup will throw a invalid date error
                     danhGia: 0,
                   }}
                   validationSchema={movieSchema}
@@ -226,7 +233,7 @@ const MoviePage = (props) => {
                                 name="ngayKhoiChieu"
                                 label="Ngày khởi chiếu"
                                 inputVariant="outlined"
-                                format="MM/dd/yyyy hh:mm"
+                                format="dd/MM/yyyy"
                                 value={formikProps.values.ngayKhoiChieu}
                                 onChange={(value) =>
                                   formikProps.setFieldValue(
@@ -273,7 +280,13 @@ const MoviePage = (props) => {
                                 <option>GP09</option>
                                 <option>GP10</option>
                               </Field>
-                              <ErrorMessage name="maNhom"></ErrorMessage>
+                              <ErrorMessage name="maNhom">
+                                {(message) => (
+                                  <div className="alert text-danger alert-validation ">
+                                    {message}
+                                  </div>
+                                )}
+                              </ErrorMessage>
                             </div>
                           </Grid>
                         </Grid>
