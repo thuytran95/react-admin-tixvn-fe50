@@ -67,3 +67,25 @@ export const actDeleteMovieRequest = (id) => {
     }
   };
 };
+
+export const actUpdateMovieRequest = (data) => {
+  return async function (dispatch) {
+    try {
+      const admin = JSON.parse(localStorage.getItem("UserAdmin"));
+      const res = await Axios({
+        method: "POST",
+        url:
+          "https://movie0706.cybersoft.edu.vn/api/QuanLyPhim/CapNhatPhimUpload",
+        data,
+        headers: `Bearer ${admin.accessToken}`,
+      });
+
+      if (res.status === 200 || res.status === 201) {
+        console.log(res.data);
+      }
+    } catch (err) {
+      console.log(err);
+      console.log(err.response.data);
+    }
+  };
+};

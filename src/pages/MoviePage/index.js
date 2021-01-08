@@ -34,7 +34,10 @@ import { Field, Form, Formik, ErrorMessage } from "formik";
 import styles from "../../assets/jss/admin-jss/pages/moviePageStyle";
 import styleCss from "./moviePageStyle.css";
 import CustomImageInput from "../../components/FormilkCustomLayout/CustomImageInput/CustomImageInput";
-import { FormikTextField } from "../../components/FormilkCustomLayout/FormikTextField";
+import {
+  FormikTextField,
+  FormikTextFieldMultiline,
+} from "../../components/FormilkCustomLayout/FormikTextField";
 
 const useStyles = makeStyles(styles);
 
@@ -46,49 +49,46 @@ const MoviePage = (props) => {
     dispatch(getMovieListRequest());
   }, []);
 
-  // set modal open
-
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  // set pagination
-  const [currentPage, setCurrentPage] = useState(0);
-
-  const MOVIE_PER_PAGE = 8;
-  const offset = currentPage * MOVIE_PER_PAGE;
-  const currentPageData = movieList
-    ?.slice(offset, offset + MOVIE_PER_PAGE)
-    .map((movie) => (
-      <Grid item key={movie.maPhim} lg={3} md={4} sm={6} xs={12}>
-        <MovieCard className={classes.movieCard} movie={movie} />
-      </Grid>
-    ));
-
-  const pageCount = Math.ceil(movieList?.length / MOVIE_PER_PAGE);
-
-  const handlePageClick = ({ selected: selectedPage }) => {
-    setCurrentPage(selectedPage);
-  };
-
   // xử lý form thêm phimNf
   const [initialValues, setInitialValues] = useState({
     maPhim: 0,
     tenPhim: "",
     biDanh: "",
     trailer: "",
-    hinhAnh: {},
+    hinhAnh: undefined,
     moTa: "",
     maNhom: "GP01",
-    ngayKhoiChieu: "",
+    ngayKhoiChieu: null, // if date is defined as '' yup will throw a invalid date error
     danhGia: 0,
   });
+
+  // handle modal
+  const [titleModal, setTitleModal] = useState({ header: "", action: "" });
+
+  // set modal open
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setTitleModal({ header: "Thêm phim", action: "Thêm" });
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setTitleModal({ header: "", action: "" });
+    setInitialValues({
+      maPhim: 0,
+      tenPhim: "",
+      biDanh: "",
+      trailer: "",
+      hinhAnh: undefined,
+      moTa: "",
+      maNhom: "GP01",
+      ngayKhoiChieu: null, // if date is defined as '' yup will throw a invalid date error
+      danhGia: 0,
+    });
+  };
+
   const handleSubmit = (values) => {
     // console.log(values);
     // console.log(values.hinhAnh.name);
@@ -108,6 +108,39 @@ const MoviePage = (props) => {
     // console.log(form_data);
     dispatch(actAddMovieRequest(form_data));
     setOpen(false);
+  };
+
+  const handleUpdate = (values) => {
+    console.log(values);
+    setTitleModal({
+      header: "Cập nhật thông tin người dùng",
+      action: "Cập nhật",
+    });
+    setInitialValues(values);
+    setOpen(true);
+  };
+
+  // set pagination
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const MOVIE_PER_PAGE = 8;
+  const offset = currentPage * MOVIE_PER_PAGE;
+  const currentPageData = movieList
+    ?.slice(offset, offset + MOVIE_PER_PAGE)
+    .map((movie) => (
+      <Grid item key={movie.maPhim} lg={3} md={4} sm={6} xs={12}>
+        <MovieCard
+          className={classes.movieCard}
+          movie={movie}
+          handleUpdate={handleUpdate}
+        />
+      </Grid>
+    ));
+
+  const pageCount = Math.ceil(movieList?.length / MOVIE_PER_PAGE);
+
+  const handlePageClick = ({ selected: selectedPage }) => {
+    setCurrentPage(selectedPage);
   };
 
   const renderHTML = () => {
@@ -145,23 +178,15 @@ const MoviePage = (props) => {
               aria-labelledby="form-dialog-title"
             >
               <DialogTitle id="form-dialog-title" className={classes.root}>
-                Thêm phim
+                {titleModal.header}
               </DialogTitle>
               <DialogContent>
                 <Formik
-                  initialValues={{
-                    maPhim: 0,
-                    tenPhim: "",
-                    biDanh: "",
-                    trailer: "",
-                    hinhAnh: undefined,
-                    moTa: "",
-                    maNhom: "GP01",
-                    ngayKhoiChieu: null, // if date is defined as '' yup will throw a invalid date error
-                    danhGia: 0,
-                  }}
+                  initialValues={initialValues}
                   validationSchema={movieSchema}
-                  onSubmit={handleSubmit}
+                  onSubmit={
+                    titleModal.action === "Thêm" ? handleSubmit : handleUpdate
+                  }
                 >
                   {(formikProps) => {
                     // console.log(formikProps);
@@ -207,6 +232,11 @@ const MoviePage = (props) => {
                               <Field
                                 name="hinhAnh"
                                 component={CustomImageInput}
+                                image={
+                                  titleModal.action !== "Thêm"
+                                    ? initialValues.hinhAnh
+                                    : null
+                                }
                                 tilte="Hình ảnh"
                                 touched={formikProps.touched["file"]}
                                 setFieldValue={formikProps.setFieldValue}
@@ -220,7 +250,8 @@ const MoviePage = (props) => {
                             </div>
                           </Grid>
                           <Grid item xs={12}>
-                            <FormikTextField
+                            <FormikTextFieldMultiline
+                              rows={3}
                               name="moTa"
                               label="Mô tả"
                               type="text"

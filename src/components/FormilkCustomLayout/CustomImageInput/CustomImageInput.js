@@ -16,7 +16,7 @@ class CustomImageInput extends Component {
 
   state = {
     file: undefined,
-    imagePreviewUrl: undefined,
+    imagePreviewUrl: this.props.image ? this.props.image : undefined,
   };
 
   showFileUpload() {
@@ -27,6 +27,7 @@ class CustomImageInput extends Component {
 
   handleImageChange(event) {
     event.preventDefault();
+
     let reader = new FileReader();
     let file = event.target.files[0];
     if (file) {
@@ -37,7 +38,9 @@ class CustomImageInput extends Component {
         });
       };
       reader.readAsDataURL(file);
+
       this.props.setFieldValue(this.props.field.name, file);
+      console.log(file);
     }
   }
 
@@ -49,6 +52,7 @@ class CustomImageInput extends Component {
     if (errorMessage) {
       comp = <Error style={{ fontSize: 36 }} />;
     } else if (file) {
+      console.log(imagePreviewUrl);
       comp = (
         <img className={classes.avatarThumb} src={imagePreviewUrl} alt="Phim" />
       );
@@ -63,13 +67,14 @@ class CustomImageInput extends Component {
   }
 
   render() {
-    const { errorMessage, title, classes } = this.props;
+    const { errorMessage, title, classes, image } = this.props;
     const { name, onBlur } = this.props.field;
     const avatarStyle = classnames(
       classes.bigAvatar,
       this.state.file ? [classes.whiteBack] : [classes.primaryBack],
       { [classes.errorBack]: errorMessage }
     );
+    console.log(image);
 
     return (
       <div className={classes.container}>
@@ -87,6 +92,7 @@ class CustomImageInput extends Component {
         <Avatar className={avatarStyle} onClick={this.showFileUpload}>
           {this.showPreloadImage()}
         </Avatar>
+
         {errorMessage ? (
           <Typography variant="caption" color="error">
             {errorMessage}

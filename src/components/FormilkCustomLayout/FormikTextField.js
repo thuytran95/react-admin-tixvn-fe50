@@ -37,6 +37,7 @@ export const FormikTextFieldMultiline = (props) => {
       fullWidth
       multiline
       rows={rows}
+      variant="outlined"
       helperText={<ErrorMessage name={name} />}
     />
   );

@@ -21,7 +21,7 @@ import { actDeleteMovieRequest } from "../../redux/actions/movie.action";
 const useStyles = makeStyles(movieCardStyle);
 
 const MovieCard = (props) => {
-  const { className, movie } = props;
+  const { className, movie, handleUpdate } = props;
   const { tenPhim, hinhAnh, moTa, ngayKhoiChieu, danhGia, maPhim } = movie;
 
   const dispatch = useDispatch();
@@ -71,7 +71,13 @@ const MovieCard = (props) => {
         </CardContent>
       </CardActionArea>
       <CardActions className={classes.cardActions}>
-        <Button size="small" color="primary">
+        <Button
+          size="small"
+          color="primary"
+          onClick={() => {
+            handleUpdate(movie);
+          }}
+        >
           <CreateIcon />
         </Button>
         <Button
