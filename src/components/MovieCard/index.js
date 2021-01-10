@@ -15,6 +15,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { capitalizeWords } from "../../utils";
 import format from "date-format";
 import movieCardStyle from "../../assets/jss/admin-jss/components/movieCardStyle";
+import CreateShowtimes from '../CreateShowtimes'
 
 const useStyles = makeStyles(movieCardStyle);
 
@@ -67,6 +68,8 @@ const MovieCard = (props) => {
         <Button size="small" color="primary">
           <CreateIcon />
         </Button>
+
+       <CreateShowtimes/>
         <Button className={classes.deleteIcon} size="small">
           <DeleteIcon />
         </Button>
