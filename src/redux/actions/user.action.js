@@ -118,7 +118,7 @@ export const actDeleteUserRequest = (data) => {
           Authorization: `Bearer ${admin.accessToken}`,
         },
       });
-      if (res.status === 200 || res.statu === 201) {
+      if (res.status === 200 || res.status === 201) {
         window.alert("Xóa thành công!");
         dispatch(createAction(DELETE_USER_SUCCESS, data));
       }

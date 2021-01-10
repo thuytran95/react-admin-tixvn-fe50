@@ -37,3 +37,9 @@ a {
   outline: none;
   line-height: 30px;
 }
+
+@media screen and (max-width: 992px) {
+  .pagination {
+    width: 50%;
+  }
+}

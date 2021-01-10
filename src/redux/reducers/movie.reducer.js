@@ -1,17 +1,25 @@
 import {
   ADD_MOVIE_FAILED,
   ADD_MOVIE_SUCESS,
+  DELETE_MOVIE_FAILED,
+  DELETE_MOVIE_SUCESS,
   GET_MOVIE_LIST_FAILED,
   GET_MOVIE_LIST_REQUEST,
   GET_MOVIE_LIST_SUCESS,
+  UPDATE_MOVIE_FAILED,
+  UPDATE_MOVIE_SUCESS,
 } from "../constants/movie.constants";
 
 const initialState = {
   loading: false,
   movieList: null,
   err: null,
-  movie: null,
+  movieAdd: null,
+  movieDelete: null,
+  movieUpdate: null,
   errAdd: null,
+  errDelete: null,
+  errUpdate: null,
 };
 
 const MovieReducer = (state = initialState, action) => {
@@ -23,10 +31,24 @@ const MovieReducer = (state = initialState, action) => {
       return { ...state, loading: false, movieList: payload };
     case GET_MOVIE_LIST_FAILED:
       return { ...state, loading: false, movieList: null, err: payload };
-    case ADD_MOVIE_SUCESS:
-      return { ...state, movie: payload };
+    case ADD_MOVIE_SUCESS: {
+      return { ...state, movieAdd: payload };
+    }
     case ADD_MOVIE_FAILED:
       return { ...state, movie: null, errAdd: payload };
+    case DELETE_MOVIE_SUCESS: {
+      // tim vi tri phan tu xoa
+      let movieList = state.movieList;
+      movieList = movieList.filter((item) => item.maPhim !== payload);
+      state.movieList = movieList;
+      return { ...state };
+    }
+    case DELETE_MOVIE_FAILED:
+      return { ...state, errDelete: payload };
+    case UPDATE_MOVIE_SUCESS:
+      return { ...state, movieUpdate: payload };
+    case UPDATE_MOVIE_FAILED:
+      return { ...state, errUpdate: payload };
     default:
       return { ...state };
   }

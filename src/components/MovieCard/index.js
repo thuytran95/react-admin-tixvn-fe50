@@ -15,13 +15,27 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { capitalizeWords } from "../../utils";
 import format from "date-format";
 import movieCardStyle from "../../assets/jss/admin-jss/components/movieCardStyle";
-import CreateShowtimes from '../CreateShowtimes'
+import { useDispatch } from "react-redux";
+import { actDeleteMovieRequest } from "../../redux/actions/movie.action";
+import CreateShowtimes from "../CreateShowtimes";
 
 const useStyles = makeStyles(movieCardStyle);
 
 const MovieCard = (props) => {
-  const { className, movie } = props;
-  const { tenPhim, hinhAnh, moTa, ngayKhoiChieu, danhGia } = movie;
+  const {
+    className,
+    movie,
+    setInitialValues,
+    setTitleModal,
+    setOpen,
+    setImage,
+  } = props;
+  const { tenPhim, hinhAnh, moTa, ngayKhoiChieu, danhGia, maPhim } = movie;
+
+  const dispatch = useDispatch();
+  const handleDelete = (id) => {
+    dispatch(actDeleteMovieRequest(id));
+  };
 
   const classes = useStyles();
   return (
@@ -65,12 +79,30 @@ const MovieCard = (props) => {
         </CardContent>
       </CardActionArea>
       <CardActions className={classes.cardActions}>
-        <Button size="small" color="primary">
+        <Button
+          size="small"
+          color="primary"
+          onClick={() => {
+            setInitialValues(movie);
+            setTitleModal({
+              header: "Cập nhật thông tin phim",
+              action: "Cập nhật",
+            });
+            setImage(hinhAnh);
+            setOpen(true);
+          }}
+        >
           <CreateIcon />
         </Button>
-
-       <CreateShowtimes/>
-        <Button className={classes.deleteIcon} size="small">
+        <CreateShowtimes/>
+        <Button
+          className={classes.deleteIcon}
+          size="small"
+          onClick={() => {
+            console.log(maPhim);
+            handleDelete(maPhim);
+          }}
+        >
           <DeleteIcon />
         </Button>
       </CardActions>

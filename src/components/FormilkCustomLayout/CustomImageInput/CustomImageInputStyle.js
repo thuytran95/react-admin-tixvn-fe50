@@ -11,7 +11,7 @@ const customImageInputStyle = (theme) => ({
     justifyContent: "center",
     //fontFamily: 'Roboto Slab',
     //fontWeight:'bold',
-    padding: theme.spacing.unit,
+    padding: theme.spacing(1),
   },
   bigAvatar: {
     margin: "auto",

@@ -13,7 +13,7 @@ import { Redirect, useHistory } from "react-router-dom";
 import { actLoginApi } from "../../redux/actions/user.action";
 
 function Login(props) {
-  console.log(props);
+  // console.log(props);
   const classes = useStyles();
 
   const [admin, setAdmin] = useState({ taiKhoan: "", matKhau: "" });

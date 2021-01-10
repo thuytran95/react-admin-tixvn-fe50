@@ -4,7 +4,7 @@ export const hiddenName = (name, length) => {
 };
 
 export const capitalizeWords = (str) => {
-  return str.replace(/\w\S*/g, function (txt) {
-    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  return str?.replace(/\w\S*/g, function (str) {
+    return str.charAt(0).toUpperCase() + str.substr(1).toLowerCase();
   });
 };

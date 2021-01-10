@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { connect, useDispatch } from "react-redux";
+import format from "date-format";
+import { connect, useDispatch, useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
 import {
   Box,
@@ -23,6 +24,7 @@ import { Loader } from "../../components/Loader";
 import Toolbar from "./Toolbar";
 import {
   actAddMovieRequest,
+  actUpdateMovieRequest,
   getMovieListRequest,
 } from "../../redux/actions/movie.action";
 import MovieCard from "../../components/MovieCard";
@@ -33,28 +35,99 @@ import { Field, Form, Formik, ErrorMessage } from "formik";
 import styles from "../../assets/jss/admin-jss/pages/moviePageStyle";
 import styleCss from "./moviePageStyle.css";
 import CustomImageInput from "../../components/FormilkCustomLayout/CustomImageInput/CustomImageInput";
-import { FormikDatePicker } from "../../components/FormilkCustomLayout/FormikDatePicker";
-import { FormikTextField } from "../../components/FormilkCustomLayout/FormikTextField";
+import {
+  FormikTextField,
+  FormikTextFieldMultiline,
+} from "../../components/FormilkCustomLayout/FormikTextField";
 
 const useStyles = makeStyles(styles);
 
 const MoviePage = (props) => {
   const classes = useStyles();
   const { loading, movieList } = props;
+  const movieAdd = useSelector((state) => state.movie.movieAdd);
+  const movieUpdate = useSelector((state) => state.movie.movieUpdate);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getMovieListRequest());
-  }, []);
+  }, [movieAdd, movieUpdate]);
+
+  // xử lý form thêm phimNf
+  const [initialValues, setInitialValues] = useState({
+    maPhim: 0,
+    tenPhim: "",
+    biDanh: "",
+    trailer: "",
+    hinhAnh: undefined,
+    moTa: "",
+    maNhom: "GP01",
+    ngayKhoiChieu: null, // if date is defined as '' yup will throw a invalid date error
+    danhGia: 0,
+  });
+
+  // handle modal
+  const [titleModal, setTitleModal] = useState({ header: "", action: "" });
 
   // set modal open
-
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
+    setTitleModal({ header: "Thêm phim", action: "Thêm" });
     setOpen(true);
   };
 
   const handleClose = () => {
+    setOpen(false);
+    setTitleModal({ header: "", action: "" });
+    setInitialValues({
+      maPhim: 0,
+      tenPhim: "",
+      biDanh: "",
+      trailer: "",
+      hinhAnh: undefined,
+      moTa: "",
+      maNhom: "GP01",
+      ngayKhoiChieu: null, // if date is defined as '' yup will throw a invalid date error
+      danhGia: 0,
+    });
+  };
+
+  // set show the image when upate movie
+  const [image, setImage] = useState(null);
+
+  const handleSubmit = (values) => {
+    // console.log(values);
+    // console.log(values.hinhAnh.name);
+
+    // chuyen doi sang form data --> yeu cau tren api
+    let form_data = new FormData();
+    for (let key in values) {
+      // format ngay chieu ve dung dinh dang tren api
+      if (key === "ngayKhoiChieu") {
+        const formatDate = format("dd/MM/yyyy", new Date(values[key]));
+        console.log(formatDate);
+        form_data.append(key, formatDate);
+      } else {
+        form_data.append(key, values[key]);
+      }
+    }
+    // console.log(form_data);
+    dispatch(actAddMovieRequest(form_data));
+    setOpen(false);
+  };
+
+  const handleUpdate = (values) => {
+    // const newValues = { ...values, hinhAnh: null };
+    // console.log(newValues);
+    console.log(values);
+    const newValue = { ...values };
+    for (let key in values) {
+      if (key === "ngayKhoiChieu") {
+        const formatDate = format("dd/MM/yyyy", new Date(values[key]));
+        newValue.ngayKhoiChieu = formatDate;
+      }
+    }
+    dispatch(actUpdateMovieRequest(newValue));
     setOpen(false);
   };
 
@@ -67,7 +140,14 @@ const MoviePage = (props) => {
     ?.slice(offset, offset + MOVIE_PER_PAGE)
     .map((movie) => (
       <Grid item key={movie.maPhim} lg={3} md={4} sm={6} xs={12}>
-        <MovieCard className={classes.movieCard} movie={movie} />
+        <MovieCard
+          className={classes.movieCard}
+          movie={movie}
+          setInitialValues={setInitialValues}
+          setTitleModal={setTitleModal}
+          setImage={setImage}
+          setOpen={setOpen}
+        />
       </Grid>
     ));
 
@@ -75,33 +155,6 @@ const MoviePage = (props) => {
 
   const handlePageClick = ({ selected: selectedPage }) => {
     setCurrentPage(selectedPage);
-  };
-
-  // xử lý form thêm phimNf
-  const [initialValues, setInitialValues] = useState({
-    maPhim: 0,
-    tenPhim: "",
-    biDanh: "",
-    trailer: "",
-    hinhAnh: {},
-    moTa: "",
-    maNhom: "GP01",
-    ngayKhoiChieu: "",
-    danhGia: 0,
-  });
-  const handleSubmit = (values) => {
-    // console.log(values);
-    // console.log(values.hinhAnh.name);
-
-    console.log(values);
-
-    // chuyen doi sang form data
-    let form_data = new FormData();
-    for (let key in values) {
-      form_data.append(key, values[key]);
-    }
-    // console.log(form_data);
-    dispatch(actAddMovieRequest(form_data));
   };
 
   const renderHTML = () => {
@@ -127,6 +180,7 @@ const MoviePage = (props) => {
                 nextLinkClassName={"pagination__link"}
                 disabledClassName={"pagination__link--disabled"}
                 activeClassName={"pagination__link--active"}
+                style={{ width: "50%" }}
               />
             </Box>
             <Dialog
@@ -138,23 +192,15 @@ const MoviePage = (props) => {
               aria-labelledby="form-dialog-title"
             >
               <DialogTitle id="form-dialog-title" className={classes.root}>
-                Thêm phim
+                {titleModal.header}
               </DialogTitle>
               <DialogContent>
                 <Formik
-                  initialValues={{
-                    maPhim: 0,
-                    tenPhim: "",
-                    biDanh: "",
-                    trailer: "",
-                    hinhAnh: undefined,
-                    moTa: "",
-                    maNhom: "GP01",
-                    ngayKhoiChieu: null, // if date is defiend as '' yup will throw a invalid date error
-                    danhGia: 0,
-                  }}
+                  initialValues={initialValues}
                   validationSchema={movieSchema}
-                  onSubmit={handleSubmit}
+                  onSubmit={
+                    titleModal.action === "Thêm" ? handleSubmit : handleUpdate
+                  }
                 >
                   {(formikProps) => {
                     // console.log(formikProps);
@@ -194,26 +240,59 @@ const MoviePage = (props) => {
                               onChange={formikProps.onChange}
                             />
                           </Grid>
-                          <Grid item xs={12}>
-                            <div className="form-group">
-                              <label>Hình ảnh</label>
-                              <Field
-                                name="hinhAnh"
-                                component={CustomImageInput}
-                                tilte="Hình ảnh"
-                                touched={formikProps.touched["file"]}
-                                setFieldValue={formikProps.setFieldValue}
-                                onBlur={formikProps.handleBlur}
-                                errorMessage={
-                                  formikProps.errors["hinhAnh"]
+                          {titleModal.action === "Thêm" ? (
+                            <Grid item xs={12}>
+                              <div className="form-group">
+                                <label>Hình ảnh</label>
+                                <Field
+                                  name="hinhAnh"
+                                  component={CustomImageInput}
+                                  tilte="Hình ảnh"
+                                  touched={formikProps.touched["file"]}
+                                  setFieldValue={formikProps.setFieldValue}
+                                  onBlur={formikProps.handleBlur}
+                                  errorMessage={
+                                    formikProps.errors["hinhAnh"]
+                                      ? formikProps.errors["hinhAnh"]
+                                      : undefined
+                                  }
+                                />
+                                {/* <ErrorMessage>
+                                  {formikProps.errors["hinhAnh"]
                                     ? formikProps.errors["hinhAnh"]
-                                    : undefined
-                                }
+                                    : undefined}
+                                </ErrorMessage> */}
+                              </div>
+                            </Grid>
+                          ) : (
+                            <Grid
+                              item
+                              xs={12}
+                              style={{ height: "500px", marginBottom: "50px" }}
+                            >
+                              <Grid item xs={12}>
+                                <FormikTextField
+                                  name="hinhAnh"
+                                  label="Hinh ảnh"
+                                  type="text"
+                                  disabled
+                                  value={null}
+                                />
+                              </Grid>
+                              <img
+                                src={image}
+                                style={{
+                                  width: "100%",
+                                  height: "100%",
+                                  objectFit: "cover",
+                                }}
                               />
-                            </div>
-                          </Grid>
+                            </Grid>
+                          )}
+
                           <Grid item xs={12}>
-                            <FormikTextField
+                            <FormikTextFieldMultiline
+                              rows={3}
                               name="moTa"
                               label="Mô tả"
                               type="text"
@@ -226,7 +305,7 @@ const MoviePage = (props) => {
                                 name="ngayKhoiChieu"
                                 label="Ngày khởi chiếu"
                                 inputVariant="outlined"
-                                format="MM/dd/yyyy hh:mm"
+                                format="dd/MM/yyyy"
                                 value={formikProps.values.ngayKhoiChieu}
                                 onChange={(value) =>
                                   formikProps.setFieldValue(
@@ -273,7 +352,13 @@ const MoviePage = (props) => {
                                 <option>GP09</option>
                                 <option>GP10</option>
                               </Field>
-                              <ErrorMessage name="maNhom"></ErrorMessage>
+                              <ErrorMessage name="maNhom">
+                                {(message) => (
+                                  <div className="alert text-danger alert-validation ">
+                                    {message}
+                                  </div>
+                                )}
+                              </ErrorMessage>
                             </div>
                           </Grid>
                         </Grid>
@@ -284,7 +369,7 @@ const MoviePage = (props) => {
                             color="secondary"
                             variant="contained"
                           >
-                            Thêm
+                            {titleModal.action}
                           </Button>
                           <Button
                             style={{
