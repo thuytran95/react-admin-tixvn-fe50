@@ -8,15 +8,13 @@ export const movieSchema = yup.object().shape({
   tenPhim: yup.string().required("*Field is required"),
   biDanh: yup.string().required("*Field is required"),
   trailer: yup.string().required("*Field is required"),
-  hinhAnh: yup
-    .mixed()
-    .nullable()
-    .required("A file is required")
-    .test(
-      "fileFormat",
-      "Unsupported Format",
-      (value) => value && SUPPORTED_FORMATS.includes(value.type)
-    ),
+  hinhAnh: yup.mixed().required("*Field is required").nullable(),
+  // .required("A file is required")
+  // .test(
+  //   "fileFormat",
+  //   "Unsupported Format",
+  //   (value) => value && SUPPORTED_FORMATS.includes(value.type)
+  // ),
 
   moTa: yup.string().required("*Field is required"),
   ngayKhoiChieu: yup.date().required("*Field is required").nullable(),

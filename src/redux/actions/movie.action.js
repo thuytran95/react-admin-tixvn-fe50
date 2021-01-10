@@ -4,10 +4,13 @@ import { movieService } from "../../service";
 import {
   ADD_MOVIE_FAILED,
   ADD_MOVIE_SUCESS,
+  DELETE_MOVIE_FAILED,
   DELETE_MOVIE_SUCESS,
   GET_MOVIE_LIST_FAILED,
   GET_MOVIE_LIST_REQUEST,
   GET_MOVIE_LIST_SUCESS,
+  UPDATE_MOVIE_FAILED,
+  UPDATE_MOVIE_SUCESS,
 } from "../constants/movie.constants";
 
 export const getMovieListRequest = () => {
@@ -31,9 +34,9 @@ export const actAddMovieRequest = (data) => {
     movieService
       .addMovie(data)
       .then((res) => {
-        console.log(res);
+        console.log(res.data);
+        dispatch(createAction(ADD_MOVIE_SUCESS, res.data));
 
-        dispatch(createAction(ADD_MOVIE_SUCESS, data));
         window.alert("Thêm phim thành công");
       })
       .catch((err) => {
@@ -58,12 +61,18 @@ export const actDeleteMovieRequest = (id) => {
 
       if (res.status === 200 || res.status === 201) {
         // console.log(res.data);
-        dispatch(DELETE_MOVIE_SUCESS, id);
+        dispatch(createAction(DELETE_MOVIE_SUCESS, id));
         window.alert("Xóa phim thành công!");
       }
     } catch (err) {
       // console.log(err.response.data);
-      window.alert(err.response.data);
+      console.log(err.response);
+      dispatch(createAction(DELETE_MOVIE_FAILED, err));
+      if (err.response?.data) {
+        window.alert(err.response.data);
+      } else {
+        window.alert(err);
+      }
     }
   };
 };
@@ -74,18 +83,23 @@ export const actUpdateMovieRequest = (data) => {
       const admin = JSON.parse(localStorage.getItem("UserAdmin"));
       const res = await Axios({
         method: "POST",
-        url:
-          "https://movie0706.cybersoft.edu.vn/api/QuanLyPhim/CapNhatPhimUpload",
+        url: "https://movie0706.cybersoft.edu.vn/api/QuanLyPhim/CapNhatPhim",
         data,
-        headers: `Bearer ${admin.accessToken}`,
+        headers: {
+          Authorization: `Bearer ${admin.accessToken}`,
+        },
       });
 
       if (res.status === 200 || res.status === 201) {
         console.log(res.data);
+        dispatch(createAction(UPDATE_MOVIE_SUCESS, res.data));
+        window.alert("Cập nhật phim thành công!");
       }
     } catch (err) {
       console.log(err);
-      console.log(err.response.data);
+      window.alert("Cập nhật phim thất bại!");
+      dispatch(createAction(UPDATE_MOVIE_FAILED, err));
+      // console.log(err.response.data);
     }
   };
 };

@@ -16,7 +16,7 @@ class CustomImageInput extends Component {
 
   state = {
     file: undefined,
-    imagePreviewUrl: this.props.image ? this.props.image : undefined,
+    imagePreviewUrl: undefined,
   };
 
   showFileUpload() {

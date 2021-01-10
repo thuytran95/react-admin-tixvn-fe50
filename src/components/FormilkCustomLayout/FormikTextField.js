@@ -8,7 +8,7 @@ import { TextField } from "@material-ui/core";
  */
 
 export const FormikTextField = (props) => {
-  const { name, label, required = false, type } = props;
+  const { name, label, required = false, type, disabled } = props;
 
   return (
     <Field
@@ -18,6 +18,7 @@ export const FormikTextField = (props) => {
       name={name}
       type={type}
       fullWidth
+      disabled={disabled}
       variant="outlined"
       helperText={<ErrorMessage name={name} />}
     />

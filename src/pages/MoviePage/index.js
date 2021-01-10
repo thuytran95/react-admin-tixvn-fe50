@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import format from "date-format";
-import { connect, useDispatch } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
 import {
   Box,
@@ -24,6 +24,7 @@ import { Loader } from "../../components/Loader";
 import Toolbar from "./Toolbar";
 import {
   actAddMovieRequest,
+  actUpdateMovieRequest,
   getMovieListRequest,
 } from "../../redux/actions/movie.action";
 import MovieCard from "../../components/MovieCard";
@@ -44,10 +45,12 @@ const useStyles = makeStyles(styles);
 const MoviePage = (props) => {
   const classes = useStyles();
   const { loading, movieList } = props;
+  const movieAdd = useSelector((state) => state.movie.movieAdd);
+  const movieUpdate = useSelector((state) => state.movie.movieUpdate);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getMovieListRequest());
-  }, []);
+  }, [movieAdd, movieUpdate]);
 
   // xử lý form thêm phimNf
   const [initialValues, setInitialValues] = useState({
@@ -89,6 +92,9 @@ const MoviePage = (props) => {
     });
   };
 
+  // set show the image when upate movie
+  const [image, setImage] = useState(null);
+
   const handleSubmit = (values) => {
     // console.log(values);
     // console.log(values.hinhAnh.name);
@@ -111,13 +117,18 @@ const MoviePage = (props) => {
   };
 
   const handleUpdate = (values) => {
+    // const newValues = { ...values, hinhAnh: null };
+    // console.log(newValues);
     console.log(values);
-    setTitleModal({
-      header: "Cập nhật thông tin người dùng",
-      action: "Cập nhật",
-    });
-    setInitialValues(values);
-    setOpen(true);
+    const newValue = { ...values };
+    for (let key in values) {
+      if (key === "ngayKhoiChieu") {
+        const formatDate = format("dd/MM/yyyy", new Date(values[key]));
+        newValue.ngayKhoiChieu = formatDate;
+      }
+    }
+    dispatch(actUpdateMovieRequest(newValue));
+    setOpen(false);
   };
 
   // set pagination
@@ -132,7 +143,10 @@ const MoviePage = (props) => {
         <MovieCard
           className={classes.movieCard}
           movie={movie}
-          handleUpdate={handleUpdate}
+          setInitialValues={setInitialValues}
+          setTitleModal={setTitleModal}
+          setImage={setImage}
+          setOpen={setOpen}
         />
       </Grid>
     ));
@@ -226,29 +240,56 @@ const MoviePage = (props) => {
                               onChange={formikProps.onChange}
                             />
                           </Grid>
-                          <Grid item xs={12}>
-                            <div className="form-group">
-                              <label>Hình ảnh</label>
-                              <Field
-                                name="hinhAnh"
-                                component={CustomImageInput}
-                                image={
-                                  titleModal.action !== "Thêm"
-                                    ? initialValues.hinhAnh
-                                    : null
-                                }
-                                tilte="Hình ảnh"
-                                touched={formikProps.touched["file"]}
-                                setFieldValue={formikProps.setFieldValue}
-                                onBlur={formikProps.handleBlur}
-                                errorMessage={
-                                  formikProps.errors["hinhAnh"]
+                          {titleModal.action === "Thêm" ? (
+                            <Grid item xs={12}>
+                              <div className="form-group">
+                                <label>Hình ảnh</label>
+                                <Field
+                                  name="hinhAnh"
+                                  component={CustomImageInput}
+                                  tilte="Hình ảnh"
+                                  touched={formikProps.touched["file"]}
+                                  setFieldValue={formikProps.setFieldValue}
+                                  onBlur={formikProps.handleBlur}
+                                  errorMessage={
+                                    formikProps.errors["hinhAnh"]
+                                      ? formikProps.errors["hinhAnh"]
+                                      : undefined
+                                  }
+                                />
+                                {/* <ErrorMessage>
+                                  {formikProps.errors["hinhAnh"]
                                     ? formikProps.errors["hinhAnh"]
-                                    : undefined
-                                }
+                                    : undefined}
+                                </ErrorMessage> */}
+                              </div>
+                            </Grid>
+                          ) : (
+                            <Grid
+                              item
+                              xs={12}
+                              style={{ height: "500px", marginBottom: "50px" }}
+                            >
+                              <Grid item xs={12}>
+                                <FormikTextField
+                                  name="hinhAnh"
+                                  label="Hinh ảnh"
+                                  type="text"
+                                  disabled
+                                  value={null}
+                                />
+                              </Grid>
+                              <img
+                                src={image}
+                                style={{
+                                  width: "100%",
+                                  height: "100%",
+                                  objectFit: "cover",
+                                }}
                               />
-                            </div>
-                          </Grid>
+                            </Grid>
+                          )}
+
                           <Grid item xs={12}>
                             <FormikTextFieldMultiline
                               rows={3}
@@ -328,7 +369,7 @@ const MoviePage = (props) => {
                             color="secondary"
                             variant="contained"
                           >
-                            Thêm
+                            {titleModal.action}
                           </Button>
                           <Button
                             style={{

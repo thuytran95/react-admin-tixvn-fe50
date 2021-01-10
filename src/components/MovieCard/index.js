@@ -21,7 +21,14 @@ import { actDeleteMovieRequest } from "../../redux/actions/movie.action";
 const useStyles = makeStyles(movieCardStyle);
 
 const MovieCard = (props) => {
-  const { className, movie, handleUpdate } = props;
+  const {
+    className,
+    movie,
+    setInitialValues,
+    setTitleModal,
+    setOpen,
+    setImage,
+  } = props;
   const { tenPhim, hinhAnh, moTa, ngayKhoiChieu, danhGia, maPhim } = movie;
 
   const dispatch = useDispatch();
@@ -75,7 +82,13 @@ const MovieCard = (props) => {
           size="small"
           color="primary"
           onClick={() => {
-            handleUpdate(movie);
+            setInitialValues(movie);
+            setTitleModal({
+              header: "Cập nhật thông tin phim",
+              action: "Cập nhật",
+            });
+            setImage(hinhAnh);
+            setOpen(true);
           }}
         >
           <CreateIcon />
