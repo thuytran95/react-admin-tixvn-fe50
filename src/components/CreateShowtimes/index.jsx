@@ -10,20 +10,34 @@ import {
   InputLabel,
   FormHelperText,
   TextField,
+  Dialog,
+  DialogTitle,
+  DialogContent,
 } from "@material-ui/core";
-import Modal from "@material-ui/core/Modal";
-import Backdrop from "@material-ui/core/Backdrop";
-import Fade from "@material-ui/core/Fade";
 import StickyHeadTable from "../StickyHeadTable";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 // import StickyHeadTable from "../StickyHeadTable";
 
 const useStyles = makeStyles((theme) => ({
-  modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+  dialog: {
+   
+    maxHeight: "90vh",
+    maxWidth: "90vh",
+  
+    overflowY: "overlay",
+    "&::-webkit-scrollbar": {
+      width: "0.4em",
+    },
+    "&::-webkit-scrollbar-track": {
+      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "rgba(0,0,0,.1)",
+      outline: "1px solid slategrey",
+    },
   },
+
   paper: {
     display: "flex",
     alignItems: "center",
@@ -38,36 +52,22 @@ const useStyles = makeStyles((theme) => ({
   input: {
     margin: "20px 0",
   },
+  errors: {
+    color: "red",
+  },
 }));
+
+const ShowTimeSchema = Yup.object().shape({
+  maHeThongRap: Yup.string().required("Required"),
+  maCumRap: Yup.string().required("Required"),
+  maRap: Yup.string().required("Required"),
+  ngayChieuGioChieu: Yup.string().required("Required"),
+  thoiLuong: Yup.string().required("Required"),
+  giaVe: Yup.string().required("Required"),
+});
 export default function CreateShowtimes() {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [selectHeThongRap, setSelectheThongRap] = useState("");
-  const [selectMaCumRap, setSelectMaCumRap] = useState("");
-  const [selectMaRap, setSelectMaRap] = useState("");
-
-  const updateSelectHeThongRap = (e)=>{
-      setSelectheThongRap(e.target.value)
-     
-      
-  }
-  const updateSelectMaCumRap = (e)=>{
-    setSelectMaCumRap(e.target.value)
-}
-
-const updateSelectMaRap = (e)=>{
-    setSelectMaRap(e.target.value)
-}
-
-
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   // set initialvalue in formik
   const [initialValue, setInitialValue] = useState({
@@ -75,73 +75,106 @@ const updateSelectMaRap = (e)=>{
     maCumRap: "",
     maRap: "",
     ngayChieuGioChieu: "",
-    thoiLuong: "GP01",
+    thoiLuong: "",
     maNhom: "",
     giaVe: "",
   });
 
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setInitialValue({
+      maHeThongRap: "",
+      maCumRap: "",
+      maRap: "",
+      ngayChieuGioChieu: "",
+      thoiLuong: "",
+      maNhom: "",
+      giaVe: "",
+    });
+  };
+
   const renderHtml = () => {
     return (
       <Formik
-        initialValues={{
-          maHeThongRap: "",
-          maCumRap: "",
-          maRap: "",
-          ngayChieuGioChieu: "",
-          thoiLuong: "",
-          maNhom: "",
-          giaVe: "",
-        }}
+        initialValues={initialValue}
         onSubmit={(values) => {
-          console.log(values, "Sss");
+          setTimeout(() => {
+            alert(JSON.stringify(values, null, 2));
+          }, 500);
         }}
-      >
-        {({ handleChange }) => {
+        validationSchema={ShowTimeSchema}
+        render={({ handleChange }) => {
           return (
             <Form style={{ width: "100%" }}>
               <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <Grid item xs={12}>
-                    <FormControl fullWidth className={classes.input}>
-                      <InputLabel id="label">Chọn hệ thống rạp</InputLabel>
-                      <Select value={selectHeThongRap} name="maHeThongRap" displayEmpty  onChange={handleChange} 
-                       onBlur={event => {
-                        event.target.name = 'maHeThongRap';
-                        updateSelectHeThongRap(event);
-                    }}
-                      >
-                      <MenuItem value="" disabled>Chọn hệ thống rạp</MenuItem>
-                        <MenuItem value="Ten">Ten</MenuItem>
-                        <MenuItem value="Twenty">Twenty</MenuItem>
+                    <FormControl
+                      className={classes.input}
+                      fullWidth
+                      margin="normal"
+                    >
+                      <InputLabel>Chọn hệ thống rạp</InputLabel>
+                      <Select onChange={handleChange} name="maHeThongRap">
+                        <MenuItem value="basic">Basic</MenuItem>
+                        <MenuItem value="advance">Advance</MenuItem>
+                        <MenuItem value="enterprise">Enterprise</MenuItem>
                       </Select>
+                      <FormHelperText className={classes.errors}>
+                        <ErrorMessage name="maHeThongRap" />
+                      </FormHelperText>
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
-                    <FormControl fullWidth className={classes.input}>
-                      <InputLabel id="label">Chọn mã cụm rạp</InputLabel>
-                      <Select value={selectMaCumRap} name="maCumRap" displayEmpty onChange={updateSelectMaCumRap} >
-                      <MenuItem value="" disabled>Chọn mã cụm rạp</MenuItem>
-                        <MenuItem value="mạnh">mạnh</MenuItem>
-                        <MenuItem value="được">được</MenuItem>
+                    <FormControl
+                      className={classes.input}
+                      fullWidth
+                      margin="normal"
+                    >
+                      <InputLabel>Chọn mã cụm rạp</InputLabel>
+                      <Select onChange={handleChange} name="maCumRap">
+                        <MenuItem value="basic">Basic</MenuItem>
+                        <MenuItem value="advance">Advance</MenuItem>
+                        <MenuItem value="enterprise">Enterprise</MenuItem>
                       </Select>
+                      <FormHelperText className={classes.errors}>
+                        <ErrorMessage name="maCumRap" />
+                      </FormHelperText>
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
-                    <FormControl fullWidth className={classes.input}>
+                    {/* <FormControl fullWidth className={classes.input}>
                       <InputLabel id="label">Chọn mã rạp</InputLabel>
                       <Select value={selectMaRap} name="maRap" displayEmpty onChange={updateSelectMaRap} >
                       <MenuItem value="" disabled>Chọn mã rạp</MenuItem>
                         <MenuItem value="Ten">Ten</MenuItem>
                         <MenuItem value="Twenty">Twenty</MenuItem>
                       </Select>
+                    </FormControl> */}
+                    <FormControl
+                      className={classes.input}
+                      fullWidth
+                      margin="normal"
+                    >
+                      <InputLabel>Mã Rạp</InputLabel>
+                      <Select onChange={handleChange} name="maRap">
+                        <MenuItem value="basic">Basic</MenuItem>
+                        <MenuItem value="advance">Advance</MenuItem>
+                        <MenuItem value="enterprise">Enterprise</MenuItem>
+                      </Select>
+                      <FormHelperText className={classes.errors}>
+                        <ErrorMessage name="maRap" />
+                      </FormHelperText>
                     </FormControl>
                   </Grid>
-          
-                   </Grid>
+                </Grid>
                 <Grid item xs={6}>
                   <Grid item xs={12}>
                     <FormControl className={classes.input} fullWidth>
-                   
                       <TextField
                         id="datetime-local"
                         label="Chọn ngày giờ chiếu"
@@ -153,6 +186,9 @@ const updateSelectMaRap = (e)=>{
                           shrink: true,
                         }}
                       />
+                      <FormHelperText className={classes.errors}>
+                        <ErrorMessage name="ngayChieuGioChieu" />
+                      </FormHelperText>
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
@@ -165,6 +201,9 @@ const updateSelectMaRap = (e)=>{
                         type="number"
                         onChange={handleChange}
                       />
+                      <FormHelperText className={classes.errors}>
+                        <ErrorMessage name="thoiLuong" />
+                      </FormHelperText>
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
@@ -176,6 +215,9 @@ const updateSelectMaRap = (e)=>{
                         name="maNhom"
                         onChange={handleChange}
                       />
+                      <FormHelperText className={classes.errors}>
+                        <ErrorMessage name="maNhom" />
+                      </FormHelperText>
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
@@ -188,17 +230,22 @@ const updateSelectMaRap = (e)=>{
                         name="giaVe"
                         onChange={handleChange}
                       />
+                      <FormHelperText className={classes.errors}>
+                        <ErrorMessage name="giaVe" />
+                      </FormHelperText>
                     </FormControl>
                   </Grid>
                 </Grid>
-                <Button type="submit" variant="contained" color="primary">
-                  Primary
-                </Button>
+                <FormControl className={classes.input} fullWidth>
+                  <Button type="submit" variant="contained" color="primary">
+                    Thêm lich chiếu
+                  </Button>
+                </FormControl>
               </Grid>
             </Form>
           );
         }}
-      </Formik>
+      />
     );
   };
   return (
@@ -213,38 +260,30 @@ const updateSelectMaRap = (e)=>{
           Tạo Lich Chiếu
         </Button>
 
-        <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          className={classes.modal}
+        <Dialog
           open={open}
           onClose={handleClose}
-          closeAfterTransition
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 500,
-          }}
+          scroll="body"
+          aria-labelledby="scroll-dialog-title"
+          aria-describedby="scroll-dialog-description"
+          classes={{ paper: classes.dialog }}
         >
-          <Fade in={open}>
-            <div className={classes.paper}>
-              <h2 id="transition-modal-title">
-                Thông tin lịch chiếu phim của phim the flast
-              </h2>
-              <hr />
-              <Grid container spacing={3}>
-                {renderHtml()}
-                <Grid item xs={12}>
-                  <Button size="small" variant="contained" color="secondary">
-                    Thêm Lich Chiếu
-                  </Button>
-                </Grid>
-                <Grid item xs={12}>
-                  <StickyHeadTable />
-                </Grid>
+          <DialogTitle  style={{textAlign:"center"}} ogTitle id="scroll-dialog-title">
+          
+            Thông tin lịch chiếu phim của phim the flast
+          </DialogTitle>
+         
+          <DialogContent style={{overflowY:"hidden"}}>
+            <Grid container spacing={3}>
+              {renderHtml()}
+
+              <Grid item xs={12}>
+                <StickyHeadTable />
+               
               </Grid>
-            </div>
-          </Fade>
-        </Modal>
+            </Grid>
+          </DialogContent>
+        </Dialog>
       </div>
     </>
   );
