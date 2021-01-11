@@ -11,6 +11,10 @@ import {
   GET_MOVIE_LIST_SUCESS,
   UPDATE_MOVIE_FAILED,
   UPDATE_MOVIE_SUCESS,
+  GET_INFOMATION_SHOWTIME_SUCESS,
+  GET_INFOMATION_SHOWTIME_FAILED,
+  GET_INFOMATION_BY_THEATER_CLUSTERS_FAILED,
+  GET_INFOMATION_BY_THEATER_CLUSTERS_SUCESS
 } from "../constants/movie.constants";
 
 export const getMovieListRequest = () => {
@@ -102,4 +106,39 @@ export const actUpdateMovieRequest = (data) => {
       // console.log(err.response.data);
     }
   };
+
+  
 };
+export const getShowScheduleInformation =(id,callback,errorCallback)=>{
+  return (dispatch) => {
+    movieService
+      .getShowScheduleInformation(id)
+      .then((res) => {
+        // console.log(res.data);
+        dispatch(createAction(GET_INFOMATION_SHOWTIME_SUCESS, res.data));
+        callback()
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch(createAction(GET_INFOMATION_SHOWTIME_FAILED, err));
+        errorCallback()
+      });
+  };
+}
+
+export const getInformationByTheaterCluster =(id,callback,errorCallback)=>{
+  return (dispatch) => {
+    movieService
+        .getInformationByTheaterCusters(id)
+      .then((res) => {
+     
+        dispatch(createAction(GET_INFOMATION_BY_THEATER_CLUSTERS_SUCESS, res.data));
+        callback()
+      })
+      .catch((err) => {
+        // console.log(err);
+        dispatch(createAction(GET_INFOMATION_BY_THEATER_CLUSTERS_FAILED, err));
+        errorCallback()
+      });
+  };
+}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState} from "react";
 import format from "date-format";
 import { connect, useDispatch, useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
@@ -51,6 +51,8 @@ const MoviePage = (props) => {
   useEffect(() => {
     dispatch(getMovieListRequest());
   }, [movieAdd, movieUpdate]);
+
+
 
   // xử lý form thêm phimNf
   const [initialValues, setInitialValues] = useState({
@@ -130,6 +132,7 @@ const MoviePage = (props) => {
     dispatch(actUpdateMovieRequest(newValue));
     setOpen(false);
   };
+
 
   // set pagination
   const [currentPage, setCurrentPage] = useState(0);

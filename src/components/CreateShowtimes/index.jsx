@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Button,
@@ -16,15 +16,19 @@ import {
 } from "@material-ui/core";
 import StickyHeadTable from "../StickyHeadTable";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import {
+  getShowScheduleInformation,
+  getInformationByTheaterCluster,
+} from "../../redux/actions/movie.action";
 import * as Yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
 // import StickyHeadTable from "../StickyHeadTable";
 
 const useStyles = makeStyles((theme) => ({
   dialog: {
-   
     maxHeight: "90vh",
     maxWidth: "90vh",
-  
+
     overflowY: "overlay",
     "&::-webkit-scrollbar": {
       width: "0.4em",
@@ -58,17 +62,71 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ShowTimeSchema = Yup.object().shape({
-  maHeThongRap: Yup.string().required("Required"),
-  maCumRap: Yup.string().required("Required"),
+  // maHeThongRap: Yup.string().required("Required"),
+  // maCumRap: Yup.string().required("Required"),
   maRap: Yup.string().required("Required"),
   ngayChieuGioChieu: Yup.string().required("Required"),
   thoiLuong: Yup.string().required("Required"),
   giaVe: Yup.string().required("Required"),
 });
-export default function CreateShowtimes() {
+export default function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [maHeThong, setMaHeThong] = useState(null);
+  const [maCumR, setMaCumR] = useState(null);
+  const dispatch = useDispatch();
 
+  const { heThongRapChieu } =
+    useSelector((state) => state?.movie?.infomatinShowTime) || "";
+
+  useEffect(() => {
+    dispatch(
+      getShowScheduleInformation(
+        maPhim,
+        () => {
+          setLoading(false);
+        },
+        () => {
+          alert("lỗi rồi");
+        }
+      )
+    );
+  }, [open]);
+
+  const handleSelectMaHeThongRap = (event) => {
+    setMaHeThong(event.target.value);
+  };
+
+  const handleSelectMaCumRap = (event) => {
+    setMaCumR(event.target.value);
+    
+  };
+
+  useEffect(() => {
+    if (maHeThong) {
+      dispatch(
+        getInformationByTheaterCluster(
+          maHeThong,
+          () => {
+            setLoading(false);
+          },
+          () => {
+            alert("lỗi rồi");
+          }
+        )
+      );
+    }
+  }, [maHeThong]);
+
+  const listCumRap =
+    useSelector((state) => state?.movie?.cinemaInformationTheater) || [];
+
+  const listRap = (listCumRap.filter(item => 
+    item.maCumRap === maCumR).map(item=>item.danhSachRap));
+
+  console.log(listRap,"1234");
+ 
   // set initialvalue in formik
   const [initialValue, setInitialValue] = useState({
     maHeThongRap: "",
@@ -92,7 +150,7 @@ export default function CreateShowtimes() {
       maRap: "",
       ngayChieuGioChieu: "",
       thoiLuong: "",
-      maNhom: "",
+      maNhom:"",
       giaVe: "",
     });
   };
@@ -119,10 +177,18 @@ export default function CreateShowtimes() {
                       margin="normal"
                     >
                       <InputLabel>Chọn hệ thống rạp</InputLabel>
-                      <Select onChange={handleChange} name="maHeThongRap">
-                        <MenuItem value="basic">Basic</MenuItem>
-                        <MenuItem value="advance">Advance</MenuItem>
-                        <MenuItem value="enterprise">Enterprise</MenuItem>
+                      <Select
+                        onChange={handleSelectMaHeThongRap}
+                        name="maHeThongRap"
+                      >
+                        {heThongRapChieu.map((item, index) => (
+                          <MenuItem key={index} value={item.maHeThongRap}>
+                            {item.maHeThongRap}
+                          </MenuItem>
+                        ))}
+
+                        {/* <MenuItem value="advance">Advance</MenuItem>
+                        <MenuItem value="enterprise">Enterprise</MenuItem> */}
                       </Select>
                       <FormHelperText className={classes.errors}>
                         <ErrorMessage name="maHeThongRap" />
@@ -136,10 +202,19 @@ export default function CreateShowtimes() {
                       margin="normal"
                     >
                       <InputLabel>Chọn mã cụm rạp</InputLabel>
-                      <Select onChange={handleChange} name="maCumRap">
-                        <MenuItem value="basic">Basic</MenuItem>
-                        <MenuItem value="advance">Advance</MenuItem>
-                        <MenuItem value="enterprise">Enterprise</MenuItem>
+                      <Select
+                        disabled={maHeThong ? false : true}
+                        onChange={handleSelectMaCumRap}
+                        name="maCumRap"
+                      >
+                        {listCumRap?.map((item, index) => (
+                          <MenuItem key={index} value={item.maCumRap}>
+                            {item.tenCumRap}
+                          </MenuItem>
+                        ))}
+
+                        {/* <MenuItem value="advance">Advance</MenuItem>
+                        <MenuItem value="enterprise">Enterprise</MenuItem> */}
                       </Select>
                       <FormHelperText className={classes.errors}>
                         <ErrorMessage name="maCumRap" />
@@ -147,24 +222,21 @@ export default function CreateShowtimes() {
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
-                    {/* <FormControl fullWidth className={classes.input}>
-                      <InputLabel id="label">Chọn mã rạp</InputLabel>
-                      <Select value={selectMaRap} name="maRap" displayEmpty onChange={updateSelectMaRap} >
-                      <MenuItem value="" disabled>Chọn mã rạp</MenuItem>
-                        <MenuItem value="Ten">Ten</MenuItem>
-                        <MenuItem value="Twenty">Twenty</MenuItem>
-                      </Select>
-                    </FormControl> */}
+                
                     <FormControl
                       className={classes.input}
                       fullWidth
                       margin="normal"
                     >
                       <InputLabel>Mã Rạp</InputLabel>
-                      <Select onChange={handleChange} name="maRap">
-                        <MenuItem value="basic">Basic</MenuItem>
-                        <MenuItem value="advance">Advance</MenuItem>
-                        <MenuItem value="enterprise">Enterprise</MenuItem>
+                      <Select disabled={maCumR ? false : true} onChange={handleChange} name="maRap">
+                        {
+                          listRap?.map((item,index)=>(
+                           
+                            <MenuItem key={index} value={item.maRap}>{item.maRap}</MenuItem>
+                          ))
+                        }
+                         <MenuItem value="advance">Advance</MenuItem>
                       </Select>
                       <FormHelperText className={classes.errors}>
                         <ErrorMessage name="maRap" />
@@ -194,7 +266,6 @@ export default function CreateShowtimes() {
                   <Grid item xs={12}>
                     <FormControl className={classes.input} fullWidth>
                       <TextField
-                        id="outlined-basic"
                         label="Chọn hời lượng phim"
                         variant="outlined"
                         name="thoiLuong"
@@ -209,10 +280,11 @@ export default function CreateShowtimes() {
                   <Grid item xs={12}>
                     <FormControl className={classes.input} fullWidth>
                       <TextField
-                        id="outlined-basic"
                         label="Mã nhóm mặc định"
                         variant="outlined"
                         name="maNhom"
+                      value={maNhom}
+                        disabled
                         onChange={handleChange}
                       />
                       <FormHelperText className={classes.errors}>
@@ -223,7 +295,6 @@ export default function CreateShowtimes() {
                   <Grid item xs={12}>
                     <FormControl className={classes.input} fullWidth>
                       <TextField
-                        id="outlined-basic"
                         label="Giá vé"
                         variant="outlined"
                         type="number"
@@ -268,18 +339,20 @@ export default function CreateShowtimes() {
           aria-describedby="scroll-dialog-description"
           classes={{ paper: classes.dialog }}
         >
-          <DialogTitle  style={{textAlign:"center"}} ogTitle id="scroll-dialog-title">
-          
-            Thông tin lịch chiếu phim của phim the flast
+          <DialogTitle
+            style={{ textAlign: "center" }}
+            ogTitle
+            id="scroll-dialog-title"
+          >
+            Thông tin lịch chiếu phim của phim : {tenPhim} {maPhim}
           </DialogTitle>
-         
-          <DialogContent style={{overflowY:"hidden"}}>
+
+          <DialogContent style={{ overflowY: "hidden" }}>
             <Grid container spacing={3}>
               {renderHtml()}
 
               <Grid item xs={12}>
                 <StickyHeadTable />
-               
               </Grid>
             </Grid>
           </DialogContent>
