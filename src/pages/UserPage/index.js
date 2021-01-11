@@ -30,7 +30,7 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import { Page } from "../../assets/jss/admin-jss/Page";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { capitalizeWords } from "../../utils";
+import { capitalizeWords, nonAccentVietnamese } from "../../utils";
 import Toolbar from "./Toolbar";
 import { signUpUserSchema } from "../../service/user.service";
 import { dataSelect, radioList } from "./dataSelect";
@@ -42,8 +42,11 @@ import styles from "../../assets/jss/admin-jss/pages/userPageStyle";
 const useStyles = makeStyles(styles);
 
 function UserPage(props) {
-  const { loading, userList, errAdd } = props;
   const classes = useStyles();
+  const { loading, errAdd } = props;
+
+  //set gia tri userList, thay doi gia tri khi tim kiem user
+  const [userList, setUserList] = useState(props.userList);
 
   // call API
   const dispatch = useDispatch();
@@ -120,13 +123,45 @@ function UserPage(props) {
     dispatch(actDeleteUserRequest(values));
   };
 
+  const [valueSearch, setValueSearch] = useState("");
+  const [searchList, setSearchList] = useState(null);
+  const handleSearch = (e) => {
+    let keyWord = e.target.value;
+    if (keyWord) {
+      let resultList = [];
+
+      // tim kiem ten nguoi dung
+
+      // duyet tuwng phan tu trong mangr movieList
+      for (let i in userList) {
+        // convert keyword - name user
+        let { taiKhoan, hoTen, email } = userList[i];
+        taiKhoan = nonAccentVietnamese(taiKhoan);
+        hoTen = nonAccentVietnamese(hoTen);
+        email = nonAccentVietnamese(email);
+        keyWord = nonAccentVietnamese(keyWord).trim();
+
+        if (hoTen.indexOf(keyWord) !== -1) {
+          resultList.push(userList[i]);
+        }
+      }
+      console.log(resultList);
+      setUserList(resultList);
+    } else {
+      setUserList(props.userList);
+    }
+  };
+
   const renderUserPage = () => {
     if (loading) return <Loader />;
     if (userList)
       return (
         <Page className={classes.page} title="Users">
           <Container maxWidth={false}>
-            <Toolbar handleClickOpen={handleClickOpen} />
+            <Toolbar
+              handleClickOpen={handleClickOpen}
+              handleSearch={handleSearch}
+            />
             <Box mt={3}>
               <Card className={classes.root}>
                 <PerfectScrollbar>
