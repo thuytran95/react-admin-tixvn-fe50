@@ -21,10 +21,9 @@ import * as Yup from "yup";
 
 const useStyles = makeStyles((theme) => ({
   dialog: {
-   
     maxHeight: "90vh",
     maxWidth: "90vh",
-  
+
     overflowY: "overlay",
     "&::-webkit-scrollbar": {
       width: "0.4em",
@@ -256,8 +255,9 @@ export default function CreateShowtimes() {
           variant="contained"
           color="secondary"
           onClick={handleOpen}
+          style={{ fontSize: "10px", outline: "none", border: "none" }}
         >
-          Tạo Lich Chiếu
+          Tạo lịch chiếu
         </Button>
 
         <Dialog
@@ -268,18 +268,20 @@ export default function CreateShowtimes() {
           aria-describedby="scroll-dialog-description"
           classes={{ paper: classes.dialog }}
         >
-          <DialogTitle  style={{textAlign:"center"}} ogTitle id="scroll-dialog-title">
-          
+          <DialogTitle
+            style={{ textAlign: "center" }}
+            ogTitle
+            id="scroll-dialog-title"
+          >
             Thông tin lịch chiếu phim của phim the flast
           </DialogTitle>
-         
-          <DialogContent style={{overflowY:"hidden"}}>
+
+          <DialogContent style={{ overflowY: "hidden" }}>
             <Grid container spacing={3}>
               {renderHtml()}
 
               <Grid item xs={12}>
                 <StickyHeadTable />
-               
               </Grid>
             </Grid>
           </DialogContent>

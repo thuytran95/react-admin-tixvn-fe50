@@ -123,8 +123,6 @@ function UserPage(props) {
     dispatch(actDeleteUserRequest(values));
   };
 
-  const [valueSearch, setValueSearch] = useState("");
-  const [searchList, setSearchList] = useState(null);
   const handleSearch = (e) => {
     let keyWord = e.target.value;
     if (keyWord) {
@@ -145,7 +143,7 @@ function UserPage(props) {
           resultList.push(userList[i]);
         }
       }
-      console.log(resultList);
+      // console.log(resultList);
       setUserList(resultList);
     } else {
       setUserList(props.userList);
