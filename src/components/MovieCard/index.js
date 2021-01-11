@@ -39,7 +39,8 @@ const MovieCard = (props) => {
     maPhim,
     maNhom,
   } = movie;
-  // console.log(movie);
+
+
   const dispatch = useDispatch();
   const handleDelete = (id) => {
     dispatch(actDeleteMovieRequest(id));
@@ -119,4 +120,4 @@ const MovieCard = (props) => {
   );
 };
 
-export default MovieCard;
+export default memo(MovieCard);

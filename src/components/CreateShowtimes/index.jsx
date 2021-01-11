@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,memo} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Button,
@@ -19,6 +19,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import {
   getShowScheduleInformation,
   getInformationByTheaterCluster,
+  createSchedule
 } from "../../redux/actions/movie.action";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
@@ -69,21 +70,24 @@ const ShowTimeSchema = Yup.object().shape({
   thoiLuong: Yup.string().required("Required"),
   giaVe: Yup.string().required("Required"),
 });
-export default function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
+function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [maHeThong, setMaHeThong] = useState(null);
   const [maCumR, setMaCumR] = useState(null);
+  const [listRaps,setListRaps] = useState([]);
   const dispatch = useDispatch();
+  const admin = JSON.parse(localStorage.getItem("UserAdmin"));
 
-  const { heThongRapChieu } =
+
+  const listHeThongRapChieu =
     useSelector((state) => state?.movie?.infomatinShowTime) || "";
 
   useEffect(() => {
     dispatch(
       getShowScheduleInformation(
-        maPhim,
+      
         () => {
           setLoading(false);
         },
@@ -99,9 +103,13 @@ export default function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
   };
 
   const handleSelectMaCumRap = (event) => {
-    setMaCumR(event.target.value);
-  };
 
+    setMaCumR(event.target.value);
+ 
+ 
+
+  
+  };
   useEffect(() => {
     if (maHeThong) {
       dispatch(
@@ -121,9 +129,15 @@ export default function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
   const listCumRap =
     useSelector((state) => state?.movie?.cinemaInformationTheater) || [];
 
-  const listRap = listCumRap
-    .filter((item) => item.maCumRap === maCumR)
-    .map((item) => item.danhSachRap);
+    useEffect(()=>{
+      const listRap = listCumRap
+      .filter((item) => item.maCumRap === maCumR)
+      .map((item) => item.danhSachRap);
+      setListRaps(...listRap)
+    },[maCumR])
+  // const listRap = listCumRap
+  //   .filter((item) => item.maCumRap === maCumR)
+  //   .map((item) => item.danhSachRap);
 
   // console.log(listRap, "1234");
 
@@ -159,10 +173,10 @@ export default function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
     return (
       <Formik
         initialValues={initialValue}
-        onSubmit={(values) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-          }, 500);
+        onSubmit={({ngayChieuGioChieu,maRap,giaVe}) => {
+        let dataTaoLich = {maPhim,ngayChieuGioChieu,maRap,giaVe}
+        console.log(JSON.stringify(dataTaoLich, null, 2));
+        // dispatch(createSchedule(JSON.stringify(dataTaoLich, null, 2),()=>{setLoading(false)},()=>{alert('lỗi rồi !')}))
         }}
         validationSchema={ShowTimeSchema}
         render={({ handleChange }) => {
@@ -181,7 +195,7 @@ export default function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
                         onChange={handleSelectMaHeThongRap}
                         name="maHeThongRap"
                       >
-                        {heThongRapChieu.map((item, index) => (
+                        {listHeThongRapChieu.map((item, index) => (
                           <MenuItem key={index} value={item.maHeThongRap}>
                             {item.maHeThongRap}
                           </MenuItem>
@@ -233,12 +247,12 @@ export default function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
                         onChange={handleChange}
                         name="maRap"
                       >
-                        {listRap?.map((item, index) => (
+                        {listRaps?.map((item, index) => (
                           <MenuItem key={index} value={item.maRap}>
                             {item.maRap}
                           </MenuItem>
                         ))}
-                        <MenuItem value="advance">Advance</MenuItem>
+                      
                       </Select>
                       <FormHelperText className={classes.errors}>
                         <ErrorMessage name="maRap" />
@@ -369,3 +383,4 @@ export default function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
     </>
   );
 }
+export default memo(CreateShowtimes)
