@@ -39,7 +39,8 @@ const MovieCard = (props) => {
     maPhim,
     maNhom,
   } = movie;
- 
+
+
   const dispatch = useDispatch();
   const handleDelete = (id) => {
     dispatch(actDeleteMovieRequest(id));

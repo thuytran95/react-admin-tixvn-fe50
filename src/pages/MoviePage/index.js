@@ -46,7 +46,7 @@ const useStyles = makeStyles(styles);
 const MoviePage = (props) => {
   const classes = useStyles();
   const { loading, movieList } = props;
-  // const [movieList, setMovieList] = useState(props.movieList);
+
   const movieAdd = useSelector((state) => state.movie.movieAdd);
   const movieUpdate = useSelector((state) => state.movie.movieUpdate);
   const dispatch = useDispatch();
@@ -133,29 +133,31 @@ const MoviePage = (props) => {
     setOpen(false);
   };
 
-  // const handleSearch = (e) => {
-  //   console.log(e.target.value);
-  //   let keyword = e.target.value;
-  //   if (keyword) {
-  //     let result = [];
+  const [searchList, setSearchList] = useState(null);
 
-  //     for (let i in movieList) {
-  //       let { tenPhim } = movieList[i];
+  const handleSearch = (e) => {
+    console.log(e.target.value);
+    let keyword = e.target.value;
+    if (keyword) {
+      let result = [];
 
-  //       // convert keyword - tenPhim
-  //       keyword = nonAccentVietnamese(keyword).trim(); //loai bo space du truoc va sau keyword
-  //       tenPhim = nonAccentVietnamese(tenPhim);
+      for (let i in movieList) {
+        let { tenPhim } = movieList[i];
 
-  //       if (tenPhim.indexOf(keyword) !== -1) {
-  //         result.push(movieList[i]);
-  //       }
-  //     }
-  //     console.log(result);
-  //     setMovieList(result);
-  //   } else {
-  //     setMovieList(props.movieList);
-  //   }
-  // };
+        // convert keyword - tenPhim
+        keyword = nonAccentVietnamese(keyword).trim(); //loai bo space du truoc va sau keyword
+        tenPhim = nonAccentVietnamese(tenPhim);
+
+        if (tenPhim.indexOf(keyword) !== -1) {
+          result.push(movieList[i]);
+        }
+      }
+      // console.log(result);
+      setSearchList(result);
+    } else {
+      setSearchList(null);
+    }
+  };
 
   // set pagination
   const [currentPage, setCurrentPage] = useState(0);
@@ -164,8 +166,8 @@ const MoviePage = (props) => {
   const offset = currentPage * MOVIE_PER_PAGE;
 
   const currentPageData = () => {
-    if (movieList?.length > 8) {
-      return movieList?.slice(offset, offset + MOVIE_PER_PAGE).map((movie) => (
+    if (searchList) {
+      return searchList.map((movie) => (
         <Grid item key={movie.maPhim} lg={3} md={4} sm={6} xs={12}>
           <MovieCard
             className={classes.movieCard}
@@ -178,7 +180,7 @@ const MoviePage = (props) => {
         </Grid>
       ));
     } else {
-      return movieList?.map((movie) => (
+      return movieList?.slice(offset, offset + MOVIE_PER_PAGE).map((movie) => (
         <Grid item key={movie.maPhim} lg={3} md={4} sm={6} xs={12}>
           <MovieCard
             className={classes.movieCard}
@@ -207,7 +209,7 @@ const MoviePage = (props) => {
           <Container maxWidth={false}>
             <Toolbar
               handleClickOpen={handleClickOpen}
-              // handleSearch={handleSearch}
+              handleSearch={handleSearch}
             />
             <Box mt={3}>
               <Grid container spacing={3}>
@@ -215,7 +217,7 @@ const MoviePage = (props) => {
               </Grid>
             </Box>
             <Box mt={3} display="flex" justifyContent="center">
-              {movieList?.length > 8 ? (
+              {!searchList ? (
                 <ReactPaginate
                   previousLabel={<NavigateBeforeIcon />}
                   nextLabel={<NavigateNextIcon />}
