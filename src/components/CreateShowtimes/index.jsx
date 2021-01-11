@@ -1,4 +1,5 @@
-import React, { useState, useEffect ,memo} from "react";
+import React, { useState, useEffect, memo } from "react";
+import format from "date-format";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Button,
@@ -19,7 +20,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import {
   getShowScheduleInformation,
   getInformationByTheaterCluster,
-  createSchedule
+  createSchedule,
 } from "../../redux/actions/movie.action";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
@@ -76,10 +77,9 @@ function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
   const [loading, setLoading] = useState(true);
   const [maHeThong, setMaHeThong] = useState(null);
   const [maCumR, setMaCumR] = useState(null);
-  const [listRaps,setListRaps] = useState([]);
+  const [listRaps, setListRaps] = useState([]);
   const dispatch = useDispatch();
   const admin = JSON.parse(localStorage.getItem("UserAdmin"));
-
 
   const listHeThongRapChieu =
     useSelector((state) => state?.movie?.infomatinShowTime) || "";
@@ -87,7 +87,6 @@ function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
   useEffect(() => {
     dispatch(
       getShowScheduleInformation(
-      
         () => {
           setLoading(false);
         },
@@ -103,12 +102,7 @@ function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
   };
 
   const handleSelectMaCumRap = (event) => {
-
     setMaCumR(event.target.value);
- 
- 
-
-  
   };
   useEffect(() => {
     if (maHeThong) {
@@ -129,12 +123,12 @@ function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
   const listCumRap =
     useSelector((state) => state?.movie?.cinemaInformationTheater) || [];
 
-    useEffect(()=>{
-      const listRap = listCumRap
+  useEffect(() => {
+    const listRap = listCumRap
       .filter((item) => item.maCumRap === maCumR)
       .map((item) => item.danhSachRap);
-      setListRaps(...listRap)
-    },[maCumR])
+    setListRaps(...listRap);
+  }, [maCumR]);
   // const listRap = listCumRap
   //   .filter((item) => item.maCumRap === maCumR)
   //   .map((item) => item.danhSachRap);
@@ -173,10 +167,17 @@ function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
     return (
       <Formik
         initialValues={initialValue}
-        onSubmit={({ngayChieuGioChieu,maRap,giaVe}) => {
-        let dataTaoLich = {maPhim,ngayChieuGioChieu,maRap,giaVe}
-        console.log(JSON.stringify(dataTaoLich, null, 2));
-        // dispatch(createSchedule(JSON.stringify(dataTaoLich, null, 2),()=>{setLoading(false)},()=>{alert('lỗi rồi !')}))
+        onSubmit={({ ngayChieuGioChieu, maRap, giaVe }) => {
+          // format lich chieu ve dinh dang tren api yeu cau
+          const formatDate = format("dd/MM/yyyy", new Date(ngayChieuGioChieu));
+          let dataTaoLich = {
+            maPhim,
+            ngayChieuGioChieu: formatDate,
+            maRap,
+            giaVe,
+          };
+          console.log(JSON.stringify(dataTaoLich, null, 2));
+          // dispatch(createSchedule(JSON.stringify(dataTaoLich, null, 2),()=>{setLoading(false)},()=>{alert('lỗi rồi !')}))
         }}
         validationSchema={ShowTimeSchema}
         render={({ handleChange }) => {
@@ -252,7 +253,6 @@ function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
                             {item.maRap}
                           </MenuItem>
                         ))}
-                      
                       </Select>
                       <FormHelperText className={classes.errors}>
                         <ErrorMessage name="maRap" />
@@ -383,4 +383,4 @@ function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
     </>
   );
 }
-export default memo(CreateShowtimes)
+export default memo(CreateShowtimes);
