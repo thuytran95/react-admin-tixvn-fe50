@@ -17,6 +17,7 @@ import format from "date-format";
 import movieCardStyle from "../../assets/jss/admin-jss/components/movieCardStyle";
 import { useDispatch } from "react-redux";
 import { actDeleteMovieRequest } from "../../redux/actions/movie.action";
+import CreateShowtimes from "../CreateShowtimes";
 
 const useStyles = makeStyles(movieCardStyle);
 
@@ -93,6 +94,7 @@ const MovieCard = (props) => {
         >
           <CreateIcon />
         </Button>
+        <CreateShowtimes/>
         <Button
           className={classes.deleteIcon}
           size="small"
