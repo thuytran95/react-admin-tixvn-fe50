@@ -79,7 +79,7 @@ const MovieCard = (props) => {
         </CardContent>
       </CardActionArea>
       <CardActions className={classes.cardActions}>
-        <CreateShowtimes />
+      
         <Button
           size="small"
           color="primary"
