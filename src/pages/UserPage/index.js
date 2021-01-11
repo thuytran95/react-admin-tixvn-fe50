@@ -132,10 +132,10 @@ function UserPage(props) {
       // duyet tuwng phan tu trong mangr movieList
       for (let i in userList) {
         // convert keyword - name user
-        let { taiKhoan, hoTen, email } = userList[i];
-        taiKhoan = nonAccentVietnamese(taiKhoan);
+        let { hoTen } = userList[i];
+
         hoTen = nonAccentVietnamese(hoTen);
-        email = nonAccentVietnamese(email);
+
         keyWord = nonAccentVietnamese(keyWord).trim();
 
         if (hoTen.indexOf(keyWord) !== -1) {
