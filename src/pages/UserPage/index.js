@@ -43,10 +43,10 @@ const useStyles = makeStyles(styles);
 
 function UserPage(props) {
   const classes = useStyles();
-  const { loading, errAdd } = props;
+  const { loading, errAdd, userList } = props;
 
   //set gia tri userList, thay doi gia tri khi tim kiem user
-  const [userList, setUserList] = useState(props.userList);
+  // const [userList, setUserList] = useState(props.userList);
 
   // call API
   const dispatch = useDispatch();
@@ -123,32 +123,32 @@ function UserPage(props) {
     dispatch(actDeleteUserRequest(values));
   };
 
-  const handleSearch = (e) => {
-    let keyWord = e.target.value;
-    if (keyWord) {
-      let resultList = [];
+  // const handleSearch = (e) => {
+  //   let keyWord = e.target.value;
+  //   if (keyWord) {
+  //     let resultList = [];
 
-      // tim kiem ten nguoi dung
+  //     // tim kiem ten nguoi dung
 
-      // duyet tuwng phan tu trong mangr movieList
-      for (let i in userList) {
-        // convert keyword - name user
-        let { taiKhoan, hoTen, email } = userList[i];
-        taiKhoan = nonAccentVietnamese(taiKhoan);
-        hoTen = nonAccentVietnamese(hoTen);
-        email = nonAccentVietnamese(email);
-        keyWord = nonAccentVietnamese(keyWord).trim();
+  //     // duyet tuwng phan tu trong mangr movieList
+  //     for (let i in userList) {
+  //       // convert keyword - name user
+  //       let { taiKhoan, hoTen, email } = userList[i];
+  //       taiKhoan = nonAccentVietnamese(taiKhoan);
+  //       hoTen = nonAccentVietnamese(hoTen);
+  //       email = nonAccentVietnamese(email);
+  //       keyWord = nonAccentVietnamese(keyWord).trim();
 
-        if (hoTen.indexOf(keyWord) !== -1) {
-          resultList.push(userList[i]);
-        }
-      }
-      // console.log(resultList);
-      setUserList(resultList);
-    } else {
-      setUserList(props.userList);
-    }
-  };
+  //       if (hoTen.indexOf(keyWord) !== -1) {
+  //         resultList.push(userList[i]);
+  //       }
+  //     }
+  //     // console.log(resultList);
+  //     setUserList(resultList);
+  //   } else {
+  //     setUserList(props.userList);
+  //   }
+  // };
 
   const renderUserPage = () => {
     if (loading) return <Loader />;
@@ -158,7 +158,7 @@ function UserPage(props) {
           <Container maxWidth={false}>
             <Toolbar
               handleClickOpen={handleClickOpen}
-              handleSearch={handleSearch}
+              // handleSearch={handleSearch}
             />
             <Box mt={3}>
               <Card className={classes.root}>

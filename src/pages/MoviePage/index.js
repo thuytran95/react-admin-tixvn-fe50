@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import format from "date-format";
 import { connect, useDispatch, useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
@@ -45,16 +45,14 @@ const useStyles = makeStyles(styles);
 
 const MoviePage = (props) => {
   const classes = useStyles();
-  const { loading } = props;
-  const [movieList, setMovieList] = useState(props.movieList);
+  const { loading, movieList } = props;
+  // const [movieList, setMovieList] = useState(props.movieList);
   const movieAdd = useSelector((state) => state.movie.movieAdd);
   const movieUpdate = useSelector((state) => state.movie.movieUpdate);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getMovieListRequest());
   }, [movieAdd, movieUpdate]);
-
-
 
   // xử lý form thêm phimNf
   const [initialValues, setInitialValues] = useState({
@@ -135,31 +133,29 @@ const MoviePage = (props) => {
     setOpen(false);
   };
 
+  // const handleSearch = (e) => {
+  //   console.log(e.target.value);
+  //   let keyword = e.target.value;
+  //   if (keyword) {
+  //     let result = [];
 
-  const handleSearch = (e) => {
-    console.log(e.target.value);
-    let keyword = e.target.value;
-    if (keyword) {
-      let result = [];
+  //     for (let i in movieList) {
+  //       let { tenPhim } = movieList[i];
 
-      for (let i in movieList) {
-        let { tenPhim } = movieList[i];
+  //       // convert keyword - tenPhim
+  //       keyword = nonAccentVietnamese(keyword).trim(); //loai bo space du truoc va sau keyword
+  //       tenPhim = nonAccentVietnamese(tenPhim);
 
-        // convert keyword - tenPhim
-        keyword = nonAccentVietnamese(keyword).trim(); //loai bo space du truoc va sau keyword
-        tenPhim = nonAccentVietnamese(tenPhim);
-
-        if (tenPhim.indexOf(keyword) !== -1) {
-          result.push(movieList[i]);
-        }
-      }
-      console.log(result);
-      setMovieList(result);
-    } else {
-      setMovieList(props.movieList);
-    }
-  };
-
+  //       if (tenPhim.indexOf(keyword) !== -1) {
+  //         result.push(movieList[i]);
+  //       }
+  //     }
+  //     console.log(result);
+  //     setMovieList(result);
+  //   } else {
+  //     setMovieList(props.movieList);
+  //   }
+  // };
 
   // set pagination
   const [currentPage, setCurrentPage] = useState(0);
@@ -211,7 +207,7 @@ const MoviePage = (props) => {
           <Container maxWidth={false}>
             <Toolbar
               handleClickOpen={handleClickOpen}
-              handleSearch={handleSearch}
+              // handleSearch={handleSearch}
             />
             <Box mt={3}>
               <Grid container spacing={3}>

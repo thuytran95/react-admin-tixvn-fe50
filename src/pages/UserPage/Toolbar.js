@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Toolbar = ({ handleClickOpen, handleSearch, className, ...rest }) => {
+const Toolbar = ({ handleClickOpen, className, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -43,7 +43,7 @@ const Toolbar = ({ handleClickOpen, handleSearch, className, ...rest }) => {
                 }}
                 placeholder="Tìm kiếm người dùng"
                 variant="outlined"
-                onChange={handleSearch}
+                // onChange={handleSearch}
               />
               <Button
                 className={classes.button}
