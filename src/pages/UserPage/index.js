@@ -45,9 +45,6 @@ function UserPage(props) {
   const classes = useStyles();
   const { loading, errAdd, userList } = props;
 
-  //set gia tri userList, thay doi gia tri khi tim kiem user
-  // const [userList, setUserList] = useState(props.userList);
-
   // call API
   const dispatch = useDispatch();
   useEffect(() => {
@@ -123,32 +120,34 @@ function UserPage(props) {
     dispatch(actDeleteUserRequest(values));
   };
 
-  // const handleSearch = (e) => {
-  //   let keyWord = e.target.value;
-  //   if (keyWord) {
-  //     let resultList = [];
+  const [searchList, setSearchList] = useState(null);
 
-  //     // tim kiem ten nguoi dung
+  const handleSearch = (e) => {
+    let keyWord = e.target.value;
+    if (keyWord) {
+      let resultList = [];
 
-  //     // duyet tuwng phan tu trong mangr movieList
-  //     for (let i in userList) {
-  //       // convert keyword - name user
-  //       let { taiKhoan, hoTen, email } = userList[i];
-  //       taiKhoan = nonAccentVietnamese(taiKhoan);
-  //       hoTen = nonAccentVietnamese(hoTen);
-  //       email = nonAccentVietnamese(email);
-  //       keyWord = nonAccentVietnamese(keyWord).trim();
+      // tim kiem ten nguoi dung
 
-  //       if (hoTen.indexOf(keyWord) !== -1) {
-  //         resultList.push(userList[i]);
-  //       }
-  //     }
-  //     // console.log(resultList);
-  //     setUserList(resultList);
-  //   } else {
-  //     setUserList(props.userList);
-  //   }
-  // };
+      // duyet tuwng phan tu trong mangr movieList
+      for (let i in userList) {
+        // convert keyword - name user
+        let { taiKhoan, hoTen, email } = userList[i];
+        taiKhoan = nonAccentVietnamese(taiKhoan);
+        hoTen = nonAccentVietnamese(hoTen);
+        email = nonAccentVietnamese(email);
+        keyWord = nonAccentVietnamese(keyWord).trim();
+
+        if (hoTen.indexOf(keyWord) !== -1) {
+          resultList.push(userList[i]);
+        }
+      }
+      // console.log(resultList);
+      setSearchList(resultList);
+    } else {
+      setSearchList(null);
+    }
+  };
 
   const renderUserPage = () => {
     if (loading) return <Loader />;
@@ -158,7 +157,7 @@ function UserPage(props) {
           <Container maxWidth={false}>
             <Toolbar
               handleClickOpen={handleClickOpen}
-              // handleSearch={handleSearch}
+              handleSearch={handleSearch}
             />
             <Box mt={3}>
               <Card className={classes.root}>
@@ -186,66 +185,126 @@ function UserPage(props) {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {userList
-                          ?.slice(
-                            page * rowsPerPage,
-                            page * rowsPerPage + rowsPerPage
-                          )
-                          .map((user, index) => {
-                            const {
-                              taiKhoan,
-                              matKhau,
-                              hoTen,
-                              email,
-                              soDt,
-                              maNhom,
-                              maLoaiNguoiDung,
-                            } = user;
-                            if (!maNhom) {
-                              user.maNhom = "GP01";
-                            }
-                            return (
-                              <TableRow key={index}>
-                                <TableCell align="left">
-                                  {user.maLoaiNguoiDung === "KhachHang"
-                                    ? "Khách Hàng"
-                                    : "Quản trị"}
-                                </TableCell>
-                                <TableCell align="left">
-                                  {capitalizeWords(hoTen)}
-                                </TableCell>
-                                <TableCell align="left">{taiKhoan}</TableCell>
-                                <TableCell align="left">{email}</TableCell>
-                                <TableCell align="left">
-                                  <EditIcon
-                                    color="primary"
-                                    onClick={() => {
-                                      setTitleModal({
-                                        header: "Cập nhật thông tin người dùng",
-                                        action: "Cập nhật",
-                                      });
-                                      setInitialValue({
-                                        taiKhoan,
-                                        matKhau,
-                                        hoTen,
-                                        soDt,
-                                        maNhom,
-                                        email,
-                                        maLoaiNguoiDung,
-                                      });
-                                      setOpen(true);
-                                    }}
-                                  />
-                                  <DeleteIcon
-                                    className={classes.deleteIcon}
-                                    onClick={() => {
-                                      handleDelete(taiKhoan);
-                                    }}
-                                  />
-                                </TableCell>
-                              </TableRow>
-                            );
-                          })}
+                        {!searchList
+                          ? userList
+                              ?.slice(
+                                page * rowsPerPage,
+                                page * rowsPerPage + rowsPerPage
+                              )
+                              .map((user, index) => {
+                                const {
+                                  taiKhoan,
+                                  matKhau,
+                                  hoTen,
+                                  email,
+                                  soDt,
+                                  maNhom,
+                                  maLoaiNguoiDung,
+                                } = user;
+                                if (!maNhom) {
+                                  user.maNhom = "GP01";
+                                }
+                                return (
+                                  <TableRow key={index}>
+                                    <TableCell align="left">
+                                      {user.maLoaiNguoiDung === "KhachHang"
+                                        ? "Khách Hàng"
+                                        : "Quản trị"}
+                                    </TableCell>
+                                    <TableCell align="left">
+                                      {capitalizeWords(hoTen)}
+                                    </TableCell>
+                                    <TableCell align="left">
+                                      {taiKhoan}
+                                    </TableCell>
+                                    <TableCell align="left">{email}</TableCell>
+                                    <TableCell align="left">
+                                      <EditIcon
+                                        color="primary"
+                                        onClick={() => {
+                                          setTitleModal({
+                                            header:
+                                              "Cập nhật thông tin người dùng",
+                                            action: "Cập nhật",
+                                          });
+                                          setInitialValue({
+                                            taiKhoan,
+                                            matKhau,
+                                            hoTen,
+                                            soDt,
+                                            maNhom,
+                                            email,
+                                            maLoaiNguoiDung,
+                                          });
+                                          setOpen(true);
+                                        }}
+                                      />
+                                      <DeleteIcon
+                                        className={classes.deleteIcon}
+                                        onClick={() => {
+                                          handleDelete(taiKhoan);
+                                        }}
+                                      />
+                                    </TableCell>
+                                  </TableRow>
+                                );
+                              })
+                          : searchList.map((user, index) => {
+                              const {
+                                taiKhoan,
+                                matKhau,
+                                hoTen,
+                                email,
+                                soDt,
+                                maNhom,
+                                maLoaiNguoiDung,
+                              } = user;
+                              if (!maNhom) {
+                                user.maNhom = "GP01";
+                              }
+                              return (
+                                <TableRow key={index}>
+                                  <TableCell align="left">
+                                    {user.maLoaiNguoiDung === "KhachHang"
+                                      ? "Khách Hàng"
+                                      : "Quản trị"}
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    {capitalizeWords(hoTen)}
+                                  </TableCell>
+                                  <TableCell align="left">{taiKhoan}</TableCell>
+                                  <TableCell align="left">{email}</TableCell>
+                                  <TableCell align="left">
+                                    <EditIcon
+                                      color="primary"
+                                      onClick={() => {
+                                        setTitleModal({
+                                          header:
+                                            "Cập nhật thông tin người dùng",
+                                          action: "Cập nhật",
+                                        });
+                                        setInitialValue({
+                                          taiKhoan,
+                                          matKhau,
+                                          hoTen,
+                                          soDt,
+                                          maNhom,
+                                          email,
+                                          maLoaiNguoiDung,
+                                        });
+                                        setOpen(true);
+                                      }}
+                                    />
+                                    <DeleteIcon
+                                      className={classes.deleteIcon}
+                                      onClick={() => {
+                                        handleDelete(taiKhoan);
+                                      }}
+                                    />
+                                  </TableCell>
+                                </TableRow>
+                              );
+                            })}
 
                         {emptyRows > 0 && (
                           <TableRow style={{ height: 62 * emptyRows }}>
@@ -256,15 +315,19 @@ function UserPage(props) {
                     </Table>
                   </Box>
                 </PerfectScrollbar>
-                <TablePagination
-                  rowsPerPageOptions={[10, 20, 30]}
-                  component="div"
-                  count={userList?.length}
-                  page={page}
-                  onChangePage={handleChangePage}
-                  rowsPerPage={rowsPerPage}
-                  onChangeRowsPerPage={handleChangeRowsPerPage}
-                />
+                {!searchList ? (
+                  <TablePagination
+                    rowsPerPageOptions={[10, 20, 30]}
+                    component="div"
+                    count={userList?.length}
+                    page={page}
+                    onChangePage={handleChangePage}
+                    rowsPerPage={rowsPerPage}
+                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                  />
+                ) : (
+                  ""
+                )}
               </Card>
             </Box>
           </Container>
