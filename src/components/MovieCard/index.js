@@ -1,4 +1,4 @@
-import React from "react";
+import React,{memo} from "react";
 import clsx from "clsx";
 import {
   Card,
@@ -30,8 +30,8 @@ const MovieCard = (props) => {
     setOpen,
     setImage,
   } = props;
-  const { tenPhim, hinhAnh, moTa, ngayKhoiChieu, danhGia, maPhim } = movie;
-
+  const { tenPhim, hinhAnh, moTa, ngayKhoiChieu, danhGia, maPhim ,maNhom} = movie;
+  console.log(movie);
   const dispatch = useDispatch();
   const handleDelete = (id) => {
     dispatch(actDeleteMovieRequest(id));
@@ -96,6 +96,9 @@ const MovieCard = (props) => {
           <CreateIcon />
         </Button>
 
+        <CreateShowtimes maPhim={maPhim} maNhom={maNhom} tenPhim={tenPhim}/>
+
+
         <Button
           className={classes.deleteIcon}
           size="small"
@@ -111,4 +114,6 @@ const MovieCard = (props) => {
   );
 };
 
-export default MovieCard;
+
+export default memo(MovieCard);
+

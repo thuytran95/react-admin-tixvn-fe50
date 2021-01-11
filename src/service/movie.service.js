@@ -39,6 +39,19 @@ class MovieService {
       data,
     });
   }
+  getShowScheduleInformation(id){
+    return Axios({
+      method:"GET",
+      url:`https://movie0706.cybersoft.edu.vn/api/QuanLyRap/LayThongTinLichChieuPhim?MaPhim=${id}`
+    })
+  }
+  getInformationByTheaterCusters(id){
+    return Axios({
+      method:"GET",
+      url:`https://movie0706.cybersoft.edu.vn/api/QuanLyRap/LayThongTinCumRapTheoHeThong?maHeThongRap=${id}`
+    })
+  }
 }
+
 
 export default MovieService;
