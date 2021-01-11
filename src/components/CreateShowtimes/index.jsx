@@ -125,7 +125,7 @@ export default function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
     .filter((item) => item.maCumRap === maCumR)
     .map((item) => item.danhSachRap);
 
-  console.log(listRap, "1234");
+  // console.log(listRap, "1234");
 
   // set initialvalue in formik
   const [initialValue, setInitialValue] = useState({
@@ -268,7 +268,7 @@ export default function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
                   <Grid item xs={12}>
                     <FormControl className={classes.input} fullWidth>
                       <TextField
-                        label="Chọn hời lượng phim"
+                        label="Chọn thời lượng phim"
                         variant="outlined"
                         name="thoiLuong"
                         type="number"
