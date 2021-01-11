@@ -39,12 +39,14 @@ import {
   FormikTextField,
   FormikTextFieldMultiline,
 } from "../../components/FormilkCustomLayout/FormikTextField";
+import { nonAccentVietnamese } from "../../utils";
 
 const useStyles = makeStyles(styles);
 
 const MoviePage = (props) => {
   const classes = useStyles();
-  const { loading, movieList } = props;
+  const { loading } = props;
+  const [movieList, setMovieList] = useState(props.movieList);
   const movieAdd = useSelector((state) => state.movie.movieAdd);
   const movieUpdate = useSelector((state) => state.movie.movieUpdate);
   const dispatch = useDispatch();
@@ -134,25 +136,66 @@ const MoviePage = (props) => {
   };
 
 
+  const handleSearch = (e) => {
+    console.log(e.target.value);
+    let keyword = e.target.value;
+    if (keyword) {
+      let result = [];
+
+      for (let i in movieList) {
+        let { tenPhim } = movieList[i];
+
+        // convert keyword - tenPhim
+        keyword = nonAccentVietnamese(keyword).trim(); //loai bo space du truoc va sau keyword
+        tenPhim = nonAccentVietnamese(tenPhim);
+
+        if (tenPhim.indexOf(keyword) !== -1) {
+          result.push(movieList[i]);
+        }
+      }
+      console.log(result);
+      setMovieList(result);
+    } else {
+      setMovieList(props.movieList);
+    }
+  };
+
+
   // set pagination
   const [currentPage, setCurrentPage] = useState(0);
 
   const MOVIE_PER_PAGE = 8;
   const offset = currentPage * MOVIE_PER_PAGE;
-  const currentPageData = movieList
-    ?.slice(offset, offset + MOVIE_PER_PAGE)
-    .map((movie) => (
-      <Grid item key={movie.maPhim} lg={3} md={4} sm={6} xs={12}>
-        <MovieCard
-          className={classes.movieCard}
-          movie={movie}
-          setInitialValues={setInitialValues}
-          setTitleModal={setTitleModal}
-          setImage={setImage}
-          setOpen={setOpen}
-        />
-      </Grid>
-    ));
+
+  const currentPageData = () => {
+    if (movieList?.length > 8) {
+      return movieList?.slice(offset, offset + MOVIE_PER_PAGE).map((movie) => (
+        <Grid item key={movie.maPhim} lg={3} md={4} sm={6} xs={12}>
+          <MovieCard
+            className={classes.movieCard}
+            movie={movie}
+            setInitialValues={setInitialValues}
+            setTitleModal={setTitleModal}
+            setImage={setImage}
+            setOpen={setOpen}
+          />
+        </Grid>
+      ));
+    } else {
+      return movieList?.map((movie) => (
+        <Grid item key={movie.maPhim} lg={3} md={4} sm={6} xs={12}>
+          <MovieCard
+            className={classes.movieCard}
+            movie={movie}
+            setInitialValues={setInitialValues}
+            setTitleModal={setTitleModal}
+            setImage={setImage}
+            setOpen={setOpen}
+          />
+        </Grid>
+      ));
+    }
+  };
 
   const pageCount = Math.ceil(movieList?.length / MOVIE_PER_PAGE);
 
@@ -166,25 +209,32 @@ const MoviePage = (props) => {
       return (
         <Page title="Movies" className={classes.root}>
           <Container maxWidth={false}>
-            <Toolbar handleClickOpen={handleClickOpen} />
+            <Toolbar
+              handleClickOpen={handleClickOpen}
+              handleSearch={handleSearch}
+            />
             <Box mt={3}>
               <Grid container spacing={3}>
-                {currentPageData}
+                {currentPageData()}
               </Grid>
             </Box>
             <Box mt={3} display="flex" justifyContent="center">
-              <ReactPaginate
-                previousLabel={<NavigateBeforeIcon />}
-                nextLabel={<NavigateNextIcon />}
-                pageCount={pageCount}
-                onPageChange={handlePageClick}
-                containerClassName={"pagination"}
-                previousLinkClassName={"pagination__link"}
-                nextLinkClassName={"pagination__link"}
-                disabledClassName={"pagination__link--disabled"}
-                activeClassName={"pagination__link--active"}
-                style={{ width: "50%" }}
-              />
+              {movieList?.length > 8 ? (
+                <ReactPaginate
+                  previousLabel={<NavigateBeforeIcon />}
+                  nextLabel={<NavigateNextIcon />}
+                  pageCount={pageCount}
+                  onPageChange={handlePageClick}
+                  containerClassName={"pagination"}
+                  previousLinkClassName={"pagination__link"}
+                  nextLinkClassName={"pagination__link"}
+                  disabledClassName={"pagination__link--disabled"}
+                  activeClassName={"pagination__link--active"}
+                  style={{ width: "50%" }}
+                />
+              ) : (
+                ""
+              )}
             </Box>
             <Dialog
               className={classes.root}

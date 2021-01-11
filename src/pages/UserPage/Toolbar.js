@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import {
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Toolbar = ({ handleClickOpen, className, ...rest }) => {
+const Toolbar = ({ handleClickOpen, handleSearch, className, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -43,6 +43,7 @@ const Toolbar = ({ handleClickOpen, className, ...rest }) => {
                 }}
                 placeholder="Tìm kiếm người dùng"
                 variant="outlined"
+                onChange={handleSearch}
               />
               <Button
                 className={classes.button}

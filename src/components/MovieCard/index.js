@@ -79,6 +79,7 @@ const MovieCard = (props) => {
         </CardContent>
       </CardActionArea>
       <CardActions className={classes.cardActions}>
+        <CreateShowtimes />
         <Button
           size="small"
           color="primary"
@@ -94,7 +95,10 @@ const MovieCard = (props) => {
         >
           <CreateIcon />
         </Button>
+
         <CreateShowtimes maPhim={maPhim} maNhom={maNhom} tenPhim={tenPhim}/>
+
+
         <Button
           className={classes.deleteIcon}
           size="small"
@@ -110,4 +114,6 @@ const MovieCard = (props) => {
   );
 };
 
+
 export default memo(MovieCard);
+

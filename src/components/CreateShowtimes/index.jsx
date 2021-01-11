@@ -327,8 +327,9 @@ export default function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
           variant="contained"
           color="secondary"
           onClick={handleOpen}
+          style={{ fontSize: "10px", outline: "none", border: "none" }}
         >
-          Tạo Lich Chiếu
+          Tạo lịch chiếu
         </Button>
 
         <Dialog
@@ -344,7 +345,10 @@ export default function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
             ogTitle
             id="scroll-dialog-title"
           >
+
             Thông tin lịch chiếu phim của phim : {tenPhim} {maPhim}
+
+
           </DialogTitle>
 
           <DialogContent style={{ overflowY: "hidden" }}>

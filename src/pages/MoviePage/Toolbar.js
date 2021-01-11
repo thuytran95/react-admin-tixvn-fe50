@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Toolbar = ({ handleClickOpen, className, ...rest }) => {
+const Toolbar = ({ handleClickOpen, handleSearch, className, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -43,6 +43,7 @@ const Toolbar = ({ handleClickOpen, className, ...rest }) => {
                 }}
                 placeholder="Tìm kiếm phim"
                 variant="outlined"
+                onChange={handleSearch}
               />
               <Button
                 className={classes.button}
