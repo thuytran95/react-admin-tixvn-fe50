@@ -39,10 +39,10 @@ class MovieService {
       data,
     });
   }
-  getShowScheduleInformation(id){
+  getShowScheduleInformation(){
     return Axios({
       method:"GET",
-      url:`https://movie0706.cybersoft.edu.vn/api/QuanLyRap/LayThongTinLichChieuPhim?MaPhim=${id}`
+      url:`https://movie0706.cybersoft.edu.vn/api/QuanLyRap/LayThongTinHeThongRap`
     })
   }
   getInformationByTheaterCusters(id){
@@ -51,6 +51,7 @@ class MovieService {
       url:`https://movie0706.cybersoft.edu.vn/api/QuanLyRap/LayThongTinCumRapTheoHeThong?maHeThongRap=${id}`
     })
   }
+
 }
 
 
