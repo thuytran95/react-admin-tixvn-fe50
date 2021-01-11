@@ -100,7 +100,6 @@ export default function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
 
   const handleSelectMaCumRap = (event) => {
     setMaCumR(event.target.value);
-    
   };
 
   useEffect(() => {
@@ -122,11 +121,12 @@ export default function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
   const listCumRap =
     useSelector((state) => state?.movie?.cinemaInformationTheater) || [];
 
-  const listRap = (listCumRap.filter(item => 
-    item.maCumRap === maCumR).map(item=>item.danhSachRap));
+  const listRap = listCumRap
+    .filter((item) => item.maCumRap === maCumR)
+    .map((item) => item.danhSachRap);
 
-  console.log(listRap,"1234");
- 
+  console.log(listRap, "1234");
+
   // set initialvalue in formik
   const [initialValue, setInitialValue] = useState({
     maHeThongRap: "",
@@ -150,7 +150,7 @@ export default function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
       maRap: "",
       ngayChieuGioChieu: "",
       thoiLuong: "",
-      maNhom:"",
+      maNhom: "",
       giaVe: "",
     });
   };
@@ -222,21 +222,23 @@ export default function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
-                
                     <FormControl
                       className={classes.input}
                       fullWidth
                       margin="normal"
                     >
                       <InputLabel>Mã Rạp</InputLabel>
-                      <Select disabled={maCumR ? false : true} onChange={handleChange} name="maRap">
-                        {
-                          listRap?.map((item,index)=>(
-                           
-                            <MenuItem key={index} value={item.maRap}>{item.maRap}</MenuItem>
-                          ))
-                        }
-                         <MenuItem value="advance">Advance</MenuItem>
+                      <Select
+                        disabled={maCumR ? false : true}
+                        onChange={handleChange}
+                        name="maRap"
+                      >
+                        {listRap?.map((item, index) => (
+                          <MenuItem key={index} value={item.maRap}>
+                            {item.maRap}
+                          </MenuItem>
+                        ))}
+                        <MenuItem value="advance">Advance</MenuItem>
                       </Select>
                       <FormHelperText className={classes.errors}>
                         <ErrorMessage name="maRap" />
@@ -283,7 +285,7 @@ export default function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
                         label="Mã nhóm mặc định"
                         variant="outlined"
                         name="maNhom"
-                      value={maNhom}
+                        value={maNhom}
                         disabled
                         onChange={handleChange}
                       />
@@ -308,7 +310,12 @@ export default function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
                   </Grid>
                 </Grid>
                 <FormControl className={classes.input} fullWidth>
-                  <Button type="submit" variant="contained" color="primary">
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    style={{ fontSize: "10px" }}
+                  >
                     Thêm lich chiếu
                   </Button>
                 </FormControl>
@@ -345,10 +352,7 @@ export default function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
             ogTitle
             id="scroll-dialog-title"
           >
-
             Thông tin lịch chiếu phim của phim : {tenPhim} {maPhim}
-
-
           </DialogTitle>
 
           <DialogContent style={{ overflowY: "hidden" }}>
