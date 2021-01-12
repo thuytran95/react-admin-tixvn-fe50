@@ -20,6 +20,7 @@ import {
   GET_MOVIE_SCHEDULE_SUCESS,
   GET_MOVIE_SCHEDULE_FAILED,
 } from "../constants/movie.constants";
+import swal from "sweetalert";
 
 export const getMovieListRequest = () => {
   return (dispatch) => {
@@ -45,7 +46,7 @@ export const actAddMovieRequest = (data) => {
         console.log(res.data);
         dispatch(createAction(ADD_MOVIE_SUCESS, res.data));
 
-        window.alert("Thêm phim thành công");
+        swal("Thông báo!", "Thêm phim thành công !", "success");
       })
       .catch((err) => {
         // console.log(err.response.data);
@@ -70,7 +71,8 @@ export const actDeleteMovieRequest = (id) => {
       if (res.status === 200 || res.status === 201) {
         // console.log(res.data);
         dispatch(createAction(DELETE_MOVIE_SUCESS, id));
-        window.alert("Xóa phim thành công!");
+
+        swal("Thông báo!", "Xóa phim thành công !", "success");
       }
     } catch (err) {
       // console.log(err.response.data);
@@ -101,13 +103,15 @@ export const actUpdateMovieRequest = (data) => {
       if (res.status === 200 || res.status === 201) {
         console.log(res.data);
         dispatch(createAction(UPDATE_MOVIE_SUCESS, res.data));
-        window.alert("Cập nhật phim thành công!");
+
+        swal("Thông báo!", "Cập nhật phim thành công !", "success");
       }
     } catch (err) {
       console.log(err);
       window.alert("Cập nhật phim thất bại!");
       dispatch(createAction(UPDATE_MOVIE_FAILED, err));
       // console.log(err.response.data);
+      swal("Thông báo!", "Cập nhật phim thất bại !", "success");
     }
   };
 };
@@ -161,28 +165,28 @@ export const actCreateMovieSchedule = (data) => {
 
       if (res.status === 200 || res.status === 201) {
         dispatch(createAction(CREATE_SCHEDULE_SUCESS, res.data));
-        window.alert("Tạo lịch chiếu thành công!");
+        swal("Thông báo!", "Thêm lich thành công !", "success");
       }
     } catch (err) {
       console.log(err.response.data);
       dispatch(createAction(CREATE_SCHEDULE_FAILED, err));
-      window.alert(err.response.data);
+      swal("Thông báo!", "Thêm lich thất bại !", "success");
     }
   };
 };
-export const getMovieSchedule = (id,callback,erroCallback) => {
+export const getMovieSchedule = (id, callback, erroCallback) => {
   return (dispatch) => {
     movieService
       .getMovieSchedule(id)
       .then((res) => {
         // console.log(res.data);
         dispatch(createAction(GET_MOVIE_SCHEDULE_SUCESS, res.data));
-        callback()
+        callback();
       })
       .catch((err) => {
         console.log(err);
         dispatch(createAction(GET_MOVIE_SCHEDULE_FAILED, err));
-        erroCallback()
+        erroCallback();
       });
   };
 };

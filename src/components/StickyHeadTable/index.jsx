@@ -56,7 +56,7 @@ function StickyHeadTable() {
       let result = [];
 
       for (let i in lichChieu) {
-        let maHeThongRap = lichChieu[i].thongTinRap.maHeThongRap;
+        let maHeThongRap = lichChieu[i].thongTinRap.maCumRap;
 
         // convert keyword - tenPhim
         keyword = nonAccentVietnamese(keyword).trim(); //loai bo space du truoc va sau keyword
@@ -76,9 +76,9 @@ function StickyHeadTable() {
   };
 
   const currentPageData = () => {
-    console.log(searchList); 
+    // console.log(searchList); 
     if (searchList) {
-      return searchList?.slice(offset, offset + MOVIE_PER_PAGE).map((item,index) => (
+      return searchList.map((item,index) => (
         <TableRow key={index}>
           <TableCell className="" align="left">
             {item.maLichChieu}
@@ -127,7 +127,7 @@ function StickyHeadTable() {
     }
   };
   const pageCount = Math.ceil(lichChieu?.length / MOVIE_PER_PAGE);
-  const pageCountList = Math.ceil(searchList?.length / MOVIE_PER_PAGE );
+  // const pageCountList = Math.ceil(searchList?.length / MOVIE_PER_PAGE );
   const offset = currentPage * MOVIE_PER_PAGE;
 
   const handlePageClick = ({ selected: selectedPage }) => {
@@ -186,18 +186,7 @@ function StickyHeadTable() {
                   style={{ width: "50%" }}
                 />
               ) : (
-                <ReactPaginate
-                  previousLabel={<NavigateBeforeIcon />}
-                  nextLabel={<NavigateNextIcon />}
-                  pageCount={pageCountList}
-                  onPageChange={handlePageClick}
-                  containerClassName={"pagination"}
-                  previousLinkClassName={"pagination__link"}
-                  nextLinkClassName={"pagination__link"}
-                  disabledClassName={"pagination__link--disabled"}
-                  activeClassName={"pagination__link--active"}
-                  style={{ width: "50%" }}
-                />
+               ""
               )}
       </div>
       </div>

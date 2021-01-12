@@ -15,10 +15,9 @@ import {
   DELETE_USER_FAILED,
   UPDATE_USER_SUCCESS,
   UPDATE_USER_FAILED,
-
 } from "../constants/user.constants.js";
 import setHeaders from "../../utils/setHeaders";
-
+import swal from "sweetalert";
 export const getUserListRequest = () => {
   return (dispatch) => {
     dispatch(createAction(GET_USER_LIST_REQUEST));
@@ -98,7 +97,8 @@ export const actAddUserRequest = (data) => {
 
       if (res.status === 200 || res.statu === 201) {
         dispatch(createAction(ADD_USER_SUCCESS, data));
-        window.alert("Thêm người dùng thành công");
+
+        swal("Thông báo!", "Thêm người dùng thành công !", "success");
       }
     } catch (error) {
       console.log(error);
@@ -146,7 +146,7 @@ export const actUpdateUserRequest = (data) => {
       });
 
       if (res.status === 200 || res.status === 201) {
-        window.alert("Cập nhật thành công");
+        swal("Thông báo!", "Cập nhật thành công !", "success");
         dispatch(createAction(UPDATE_USER_SUCCESS, res.data));
       }
     } catch (err) {
@@ -155,4 +155,3 @@ export const actUpdateUserRequest = (data) => {
     }
   };
 };
-
