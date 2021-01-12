@@ -363,12 +363,12 @@ function UserPage(props) {
                       name="hoTen"
                       label="Họ tên"
                       type="text"
-                      onChange={formikProps.onChange}
+                      onChange={formikProps.handleChange}
                     />
                   </Grid>
                   <Grid item xs={12}>
                     <FormikTextField
-                      onChange={formikProps.onChange}
+                      onChange={formikProps.handleChange}
                       name="email"
                       label="Email"
                       type="email"
@@ -376,7 +376,7 @@ function UserPage(props) {
                   </Grid>
                   <Grid item xs={12}>
                     <FormikTextField
-                      onChange={formikProps.onChange}
+                      onChange={formikProps.handleChange}
                       name="soDt"
                       label="Số điện thoại"
                       type="text"
@@ -384,7 +384,7 @@ function UserPage(props) {
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <FormikTextField
-                      onChange={formikProps.onChange}
+                      onChange={formikProps.handleChange}
                       name="taiKhoan"
                       label="Tài khoản"
                       type="text"
@@ -392,7 +392,7 @@ function UserPage(props) {
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <FormikTextField
-                      onChange={formikProps.onChange}
+                      onChange={formikProps.handleChange}
                       name="matKhau"
                       label="Mật khẩu"
                       type="password"
@@ -400,7 +400,7 @@ function UserPage(props) {
                   </Grid>
                 </Grid>
                 <FormikRadioGroup
-                  onChange={formikProps.onChange}
+                  onChange={formikProps.handleChange}
                   className={classes.formControlRadio}
                   name="maLoaiNguoiDung"
                   items={radioList}
@@ -408,7 +408,7 @@ function UserPage(props) {
                   required
                 />
                 <FormikSelect
-                  onChange={formikProps.onChange}
+                  onChange={formikProps.handleChange}
                   name="maNhom"
                   items={dataSelect}
                   label="Mã nhóm"

@@ -1,6 +1,6 @@
 import Axios from "axios";
 import * as yup from "yup";
-const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif", "image/png"];
+// const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif", "image/png"];
 
 // schema to validate add movie
 export const movieSchema = yup.object().shape({
@@ -22,6 +22,15 @@ export const movieSchema = yup.object().shape({
   maNhom: yup.string().required("*Field is required"),
 });
 
+export const scheduleSchema = yup.object().shape({
+  maHeThongRap: yup.string().required("*Field is required"),
+  maCumRap: yup.string().required("*Field is required"),
+  maRap: yup.string().required("*Field is required"),
+  ngayChieuGioChieu: yup.date().required("*Field is required").nullable(),
+  thoiLuong: yup.number().required("*Field is required"),
+  giaVe: yup.number().required("*Field is required"),
+});
+
 class MovieService {
   getMovieList() {
     return Axios({
@@ -39,20 +48,18 @@ class MovieService {
       data,
     });
   }
-  getShowScheduleInformation(){
+  getShowScheduleInformation() {
     return Axios({
-      method:"GET",
-      url:`https://movie0706.cybersoft.edu.vn/api/QuanLyRap/LayThongTinHeThongRap`
-    })
+      method: "GET",
+      url: `https://movie0706.cybersoft.edu.vn/api/QuanLyRap/LayThongTinHeThongRap`,
+    });
   }
-  getInformationByTheaterCusters(id){
+  getInformationByTheaterCusters(id) {
     return Axios({
-      method:"GET",
-      url:`https://movie0706.cybersoft.edu.vn/api/QuanLyRap/LayThongTinCumRapTheoHeThong?maHeThongRap=${id}`
-    })
+      method: "GET",
+      url: `https://movie0706.cybersoft.edu.vn/api/QuanLyRap/LayThongTinCumRapTheoHeThong?maHeThongRap=${id}`,
+    });
   }
-
 }
-
 
 export default MovieService;

@@ -263,7 +263,7 @@ const MoviePage = (props) => {
                               name="maPhim"
                               label="Mã phim"
                               type="text"
-                              onChange={formikProps.onChange}
+                              onChange={formikProps.handleChange}
                             />
                           </Grid>
                           <Grid item xs={12}>
@@ -271,7 +271,7 @@ const MoviePage = (props) => {
                               name="tenPhim"
                               label="Tên phim"
                               type="text"
-                              onChange={formikProps.onChange}
+                              onChange={formikProps.handleChange}
                             />
                           </Grid>
                           <Grid item xs={12}>
@@ -279,7 +279,7 @@ const MoviePage = (props) => {
                               name="biDanh"
                               label="Bí danh"
                               type="text"
-                              onChange={formikProps.onChange}
+                              onChange={formikProps.handleChange}
                             />
                           </Grid>
 
@@ -288,7 +288,7 @@ const MoviePage = (props) => {
                               name="trailer"
                               label="Trailer"
                               type="text"
-                              onChange={formikProps.onChange}
+                              onChange={formikProps.handleChange}
                             />
                           </Grid>
                           {titleModal.action === "Thêm" ? (
@@ -308,11 +308,6 @@ const MoviePage = (props) => {
                                       : undefined
                                   }
                                 />
-                                {/* <ErrorMessage>
-                                  {formikProps.errors["hinhAnh"]
-                                    ? formikProps.errors["hinhAnh"]
-                                    : undefined}
-                                </ErrorMessage> */}
                               </div>
                             </Grid>
                           ) : (
@@ -347,7 +342,7 @@ const MoviePage = (props) => {
                               name="moTa"
                               label="Mô tả"
                               type="text"
-                              onChange={formikProps.onChange}
+                              onChange={formikProps.handleChange}
                             />
                           </Grid>
                           <Grid item xs={12}>
@@ -381,7 +376,7 @@ const MoviePage = (props) => {
                               name="danhGia"
                               label="Đánh giá"
                               type="text"
-                              onChange={formikProps.onChange}
+                              onChange={formikProps.handleChange}
                             />
                           </Grid>
                           <Grid item xs={12}>
@@ -391,6 +386,7 @@ const MoviePage = (props) => {
                                 as="select"
                                 className="form-control"
                                 name="maNhom"
+                                onChange={formikProps.handleChange}
                               >
                                 <option>GP01</option>
                                 <option>GP02</option>

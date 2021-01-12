@@ -144,14 +144,13 @@ export const getInformationByTheaterCluster = (id, callback, errorCallback) => {
   };
 };
 
-export const createSchedule = (data, callback, errorCallback) => {
+export const actCreateMovieSchedule = (data) => {
   return async function (dispatch) {
     try {
       const admin = JSON.parse(localStorage.getItem("UserAdmin"));
-
       const res = await Axios({
-        method: "GET",
-        url: `https://movie0706.cybersoft.edu.vn/api/QuanLyDatVe/TaoLichChieu`,
+        method: "POST",
+        url: "https://movie0706.cybersoft.edu.vn/api/QuanLyDatVe/TaoLichChieu",
         data,
         headers: {
           Authorization: `Bearer ${admin.accessToken}`,
@@ -160,13 +159,12 @@ export const createSchedule = (data, callback, errorCallback) => {
 
       if (res.status === 200 || res.status === 201) {
         dispatch(createAction(CREATE_SCHEDULE_SUCESS, res.data));
-        callback();
-        window.alert("Cập nhật phim thành công!");
+        window.alert("Tạo lịch chiếu thành công!");
       }
     } catch (err) {
+      console.log(err.response.data);
       dispatch(createAction(CREATE_SCHEDULE_FAILED, err));
-      console.log(err);
-      errorCallback();
+      window.alert(err.response.data);
     }
   };
 };

@@ -10,6 +10,8 @@ import {
   UPDATE_MOVIE_SUCESS,
   GET_INFOMATION_SHOWTIME_SUCESS,
   GET_INFOMATION_BY_THEATER_CLUSTERS_SUCESS,
+  CREATE_SCHEDULE_SUCESS,
+  CREATE_SCHEDULE_FAILED,
 } from "../constants/movie.constants";
 
 const initialState = {
@@ -19,9 +21,11 @@ const initialState = {
   movieAdd: null,
   movieDelete: null,
   movieUpdate: null,
+  newSchedule: null,
   errAdd: null,
   errDelete: null,
   errUpdate: null,
+  errCreateSchedule: null,
   infomatinShowTime: "",
   cinemaInformationTheater: null,
 };
@@ -57,6 +61,11 @@ const MovieReducer = (state = initialState, action) => {
       return { ...state, infomatinShowTime: payload };
     case GET_INFOMATION_BY_THEATER_CLUSTERS_SUCESS:
       return { ...state, cinemaInformationTheater: payload };
+    case CREATE_SCHEDULE_SUCESS:
+      return { ...state, newSchedule: payload };
+    case CREATE_SCHEDULE_FAILED:
+      return { ...state, errCreateSchedule: payload };
+
     default:
       return { ...state };
   }

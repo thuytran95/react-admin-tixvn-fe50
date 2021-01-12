@@ -40,7 +40,6 @@ const MovieCard = (props) => {
     maNhom,
   } = movie;
 
-
   const dispatch = useDispatch();
   const handleDelete = (id) => {
     dispatch(actDeleteMovieRequest(id));
