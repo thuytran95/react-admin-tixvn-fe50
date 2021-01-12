@@ -4,17 +4,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import {
   Button,
   Grid,
-  Input,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  FormHelperText,
-  TextField,
   Dialog,
   DialogTitle,
   DialogContent,
-  Typography,
   colors,
   Box,
 } from "@material-ui/core";
@@ -371,7 +363,7 @@ function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
             <Box spacing={3}>
               {renderHtml()}
 
-              <StickyHeadTable />
+            
             </Box>
           </DialogContent>
         </Dialog>

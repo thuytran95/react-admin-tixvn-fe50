@@ -17,6 +17,8 @@ import {
   GET_INFOMATION_BY_THEATER_CLUSTERS_SUCESS,
   CREATE_SCHEDULE_FAILED,
   CREATE_SCHEDULE_SUCESS,
+  GET_MOVIE_SCHEDULE_SUCESS,
+  GET_MOVIE_SCHEDULE_FAILED,
 } from "../constants/movie.constants";
 
 export const getMovieListRequest = () => {
@@ -166,5 +168,21 @@ export const actCreateMovieSchedule = (data) => {
       dispatch(createAction(CREATE_SCHEDULE_FAILED, err));
       window.alert(err.response.data);
     }
+  };
+};
+export const getMovieSchedule = (id,callback,erroCallback) => {
+  return (dispatch) => {
+    movieService
+      .getMovieSchedule(id)
+      .then((res) => {
+        // console.log(res.data);
+        dispatch(createAction(GET_MOVIE_SCHEDULE_SUCESS, res.data));
+        callback()
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch(createAction(GET_MOVIE_SCHEDULE_FAILED, err));
+        erroCallback()
+      });
   };
 };

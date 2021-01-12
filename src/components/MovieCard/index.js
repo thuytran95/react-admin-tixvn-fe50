@@ -18,6 +18,7 @@ import movieCardStyle from "../../assets/jss/admin-jss/components/movieCardStyle
 import { useDispatch } from "react-redux";
 import { actDeleteMovieRequest } from "../../redux/actions/movie.action";
 import CreateShowtimes from "../CreateShowtimes";
+import {Link} from 'react-router-dom'
 
 const useStyles = makeStyles(movieCardStyle);
 
@@ -88,6 +89,16 @@ const MovieCard = (props) => {
       </CardActionArea>
       <CardActions className={classes.cardActions}>
         <CreateShowtimes maPhim={maPhim} maNhom={maNhom} tenPhim={tenPhim} />
+        <Button   style={{ fontSize: "10px", outline: "none", border: "none" }}   size="small"
+          variant="contained"
+          color="secondary">
+            <Link style={{
+              textDecoration:"none",
+              color:"white",
+              lineHeight:"unset"
+,
+            }} to={`/showschedule/${maPhim}`}> Lịch Chiếu</Link>
+        </Button>
         <Button
           size="small"
           color="primary"
@@ -103,7 +114,7 @@ const MovieCard = (props) => {
         >
           <CreateIcon />
         </Button>
-
+      
         <Button
           className={classes.deleteIcon}
           size="small"
