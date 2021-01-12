@@ -92,11 +92,12 @@ function StickyHeadTable() {
           <TableCell className="" align="left">
             {item.ngayChieuGioChieu}
           </TableCell>
-          <TableCell className="" align="left">
-            {item.giaVe}
-          </TableCell>
+       
           <TableCell className="" align="left">
             {item.thoiLuong}
+          </TableCell>
+          <TableCell className="" align="left">
+            {item.giaVe}
           </TableCell>
         </TableRow>
       ));
