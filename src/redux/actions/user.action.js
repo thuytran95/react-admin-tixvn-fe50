@@ -102,7 +102,8 @@ export const actAddUserRequest = (data) => {
       }
     } catch (error) {
       console.log(error);
-      window.alert(error.response.data);
+    
+      swal("Thông báo!", `${error.response.data}`, "error");
       dispatch(createAction(ADD_USER_FAILED, error));
     }
   };
@@ -120,12 +121,13 @@ export const actDeleteUserRequest = (data) => {
         },
       });
       if (res.status === 200 || res.status === 201) {
-        window.alert("Xóa thành công!");
+    
+        swal("Thông báo!", "Xóa thành công !", "success");
         dispatch(createAction(DELETE_USER_SUCCESS, data));
       }
     } catch (err) {
-      console.log(err);
-      window.alert(err.response.data);
+      // console.log(err);
+      swal("Thông báo!", `${err.response.data}`, "error");
       dispatch(createAction(DELETE_USER_FAILED, err));
     }
   };
@@ -150,7 +152,7 @@ export const actUpdateUserRequest = (data) => {
         dispatch(createAction(UPDATE_USER_SUCCESS, res.data));
       }
     } catch (err) {
-      window.alert(err.response.data);
+      swal("Thông báo!", `${err.response.data}`, "error");
       dispatch(createAction(UPDATE_USER_FAILED, err));
     }
   };

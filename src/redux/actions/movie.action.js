@@ -32,7 +32,8 @@ export const getMovieListRequest = () => {
         dispatch(createAction(GET_MOVIE_LIST_SUCESS, res.data));
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
+        swal("Thông báo!", `${err}`, "error");
         dispatch(createAction(GET_MOVIE_LIST_FAILED, err));
       });
   };
@@ -50,7 +51,8 @@ export const actAddMovieRequest = (data) => {
       })
       .catch((err) => {
         // console.log(err.response.data);
-        window.alert(err.response.data);
+        // window.alert(err.response.data);
+        swal("Thông báo!", `${err.response.data}`, "error");
         dispatch(createAction(ADD_MOVIE_FAILED, err));
       });
   };
@@ -79,9 +81,11 @@ export const actDeleteMovieRequest = (id) => {
       console.log(err.response);
       dispatch(createAction(DELETE_MOVIE_FAILED, err));
       if (err.response?.data) {
-        window.alert(err.response.data);
+      
+        swal("Thông báo!", `${err.response.data}`, "error");
       } else {
-        window.alert(err);
+     
+        swal("Thông báo!", `${err}`, "error");
       }
     }
   };
@@ -108,10 +112,10 @@ export const actUpdateMovieRequest = (data) => {
       }
     } catch (err) {
       console.log(err);
-      window.alert("Cập nhật phim thất bại!");
+      // window.alert("Cập nhật phim thất bại!");
       dispatch(createAction(UPDATE_MOVIE_FAILED, err));
       // console.log(err.response.data);
-      swal("Thông báo!", "Cập nhật phim thất bại !", "success");
+      swal("Thông báo!", "Cập nhật phim thất bại !", "error");
     }
   };
 };
@@ -170,7 +174,7 @@ export const actCreateMovieSchedule = (data) => {
     } catch (err) {
       console.log(err.response.data);
       dispatch(createAction(CREATE_SCHEDULE_FAILED, err));
-      swal("Thông báo!", "Thêm lich thất bại !", "success");
+      swal("Thông báo!", "Thêm lich thất bại !", "error");
     }
   };
 };
