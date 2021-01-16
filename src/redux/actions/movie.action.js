@@ -32,7 +32,8 @@ export const getMovieListRequest = () => {
         dispatch(createAction(GET_MOVIE_LIST_SUCESS, res.data));
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
+        swal("Thông báo!", `${err}`, "error");
         dispatch(createAction(GET_MOVIE_LIST_FAILED, err));
       });
   };
@@ -123,6 +124,9 @@ export const actUpdateMovieRequest = (data) => {
         title: "Cập nhật thất bại!",
         icon: "warning",
       });
+      console.log(err);
+      // window.alert("Cập nhật phim thất bại!");
+      dispatch(createAction(UPDATE_MOVIE_FAILED, err));
     }
   };
 };
