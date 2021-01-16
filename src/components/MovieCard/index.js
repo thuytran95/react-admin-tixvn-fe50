@@ -9,16 +9,18 @@ import {
   makeStyles,
   Typography,
   Button,
+  colors,
 } from "@material-ui/core";
 import CreateIcon from "@material-ui/icons/Create";
 import DeleteIcon from "@material-ui/icons/Delete";
+import ScheduleIcon from "@material-ui/icons/Schedule";
 import { capitalizeWords } from "../../utils";
 import format from "date-format";
 import movieCardStyle from "../../assets/jss/admin-jss/components/movieCardStyle";
 import { useDispatch } from "react-redux";
 import { actDeleteMovieRequest } from "../../redux/actions/movie.action";
 import CreateShowtimes from "../CreateShowtimes";
-import {Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(movieCardStyle);
 
@@ -89,15 +91,17 @@ const MovieCard = (props) => {
       </CardActionArea>
       <CardActions className={classes.cardActions}>
         <CreateShowtimes maPhim={maPhim} maNhom={maNhom} tenPhim={tenPhim} />
-        <Button   style={{ fontSize: "10px", outline: "none", border: "none" }}   size="small"
-          variant="contained"
-          color="secondary">
-            <Link style={{
-              textDecoration:"none",
-              color:"white",
-              lineHeight:"unset"
-,
-            }} to={`/showschedule/${maPhim}`}> Lịch Chiếu</Link>
+        <Button style={{ fontSize: "10px", outline: "none", border: "none" }}>
+          <Link
+            style={{
+              textDecoration: "none",
+              color: colors.amber[500],
+              lineHeight: "unset",
+            }}
+            to={`/showschedule/${maPhim}`}
+          >
+            <ScheduleIcon />
+          </Link>
         </Button>
         <Button
           size="small"
@@ -114,9 +118,10 @@ const MovieCard = (props) => {
         >
           <CreateIcon />
         </Button>
-      
+
         <Button
           className={classes.deleteIcon}
+          style={{ marginLeft: 0 }}
           size="small"
           onClick={() => {
             console.log(maPhim);

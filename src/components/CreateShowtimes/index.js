@@ -47,22 +47,20 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 
-  paper: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "column",
-    backgroundColor: theme.palette.background.paper,
-    borderRadius: "4px",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-    width: "60%",
-  },
   input: {
     margin: "20px 0",
   },
   errors: {
     color: "red",
+  },
+  createSchedule: {
+    fontSize: "10px",
+    outline: "none",
+    border: "none",
+    padding: "5px",
+    [theme.breakpoints.up("sm")]: {
+      height: "40px",
+    },
   },
 }));
 
@@ -74,7 +72,7 @@ const ShowTimeSchema = Yup.object().shape({
   thoiLuong: Yup.string().required("Required"),
   giaVe: Yup.string().required("Required"),
 });
-function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
+function CreateShowtimes({ maPhim, tenPhim }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -334,40 +332,34 @@ function CreateShowtimes({ maNhom, maPhim, tenPhim }) {
   };
   return (
     <>
-      <div>
-        <Button
-          size="small"
-          variant="contained"
-          color="secondary"
-          onClick={handleOpen}
-          style={{ fontSize: "10px", outline: "none", border: "none" }}
-        >
-          Tạo lịch chiếu
-        </Button>
+      <Button
+        className={classes.createSchedule}
+        variant="contained"
+        color="secondary"
+        onClick={handleOpen}
+        style={{}}
+      >
+        Tạo lịch chiếu
+      </Button>
 
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          scroll="body"
-          aria-labelledby="scroll-dialog-title"
-          aria-describedby="scroll-dialog-description"
-          className={classes.root}
-        >
-          <DialogTitle id="scroll-dialog-title">
-            Tạo lịch chiếu phim
-            <br />
-            {tenPhim}
-          </DialogTitle>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        scroll="body"
+        aria-labelledby="scroll-dialog-title"
+        aria-describedby="scroll-dialog-description"
+        className={classes.root}
+      >
+        <DialogTitle id="scroll-dialog-title">
+          Tạo lịch chiếu phim
+          <br />
+          {tenPhim}
+        </DialogTitle>
 
-          <DialogContent style={{ overflowY: "hidden" }}>
-            <Box spacing={3}>
-              {renderHtml()}
-
-            
-            </Box>
-          </DialogContent>
-        </Dialog>
-      </div>
+        <DialogContent style={{ overflowY: "hidden" }}>
+          <Box spacing={3}>{renderHtml()}</Box>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

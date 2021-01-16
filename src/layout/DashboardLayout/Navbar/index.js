@@ -11,7 +11,7 @@ import {
   Typography,
   makeStyles,
 } from "@material-ui/core";
-import { BarChart, AccountCircle, Movie } from "@material-ui/icons";
+import { AccountCircle, Movie } from "@material-ui/icons";
 
 import NavItem from "./NavItem";
 
@@ -21,11 +21,6 @@ const user = {
 };
 
 const items = [
-  {
-    href: "/dashboard",
-    icon: BarChart,
-    title: "Trang chủ",
-  },
   {
     href: "/users",
     icon: AccountCircle,
@@ -72,7 +67,7 @@ const Navbar = (props) => {
           <Avatar
             className={classes.avatar}
             component={RouterLink}
-            to="/dashboard"
+            to="/users"
           />
           <Typography className={classes.name} color="textPrimary" variant="h5">
             {user.name}

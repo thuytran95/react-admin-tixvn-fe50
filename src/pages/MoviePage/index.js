@@ -32,15 +32,14 @@ import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { movieSchema } from "../../service/movie.service";
 import { Field, Form, Formik, ErrorMessage } from "formik";
-import styles from "../../assets/jss/admin-jss/pages/moviePageStyle";
-import styleCss from "./moviePageStyle.css";
 import CustomImageInput from "../../components/FormilkCustomLayout/CustomImageInput/CustomImageInput";
 import {
   FormikTextField,
   FormikTextFieldMultiline,
 } from "../../components/FormilkCustomLayout/FormikTextField";
 import { nonAccentVietnamese } from "../../utils";
-
+import styles from "../../assets/jss/admin-jss/pages/moviePageStyle";
+import styleCss from "./moviePageStyle.css";
 const useStyles = makeStyles(styles);
 
 const MoviePage = (props) => {

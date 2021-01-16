@@ -98,12 +98,19 @@ export const actAddUserRequest = (data) => {
       if (res.status === 200 || res.statu === 201) {
         dispatch(createAction(ADD_USER_SUCCESS, data));
 
-        swal("Thông báo!", "Thêm người dùng thành công !", "success");
+        swal({
+          title: "Thêm người dùng thành công!",
+          icon: "success",
+        });
       }
-    } catch (error) {
-      console.log(error);
-      window.alert(error.response.data);
-      dispatch(createAction(ADD_USER_FAILED, error));
+    } catch (err) {
+      console.log(err);
+      swal({
+        title: "Thất bại!",
+        text: `${err.response.data}`,
+        icon: "warning",
+      });
+      dispatch(createAction(ADD_USER_FAILED, err));
     }
   };
 };
@@ -120,12 +127,19 @@ export const actDeleteUserRequest = (data) => {
         },
       });
       if (res.status === 200 || res.status === 201) {
-        window.alert("Xóa thành công!");
+        swal({
+          title: "Xóa thành công!",
+          icon: "success",
+        });
         dispatch(createAction(DELETE_USER_SUCCESS, data));
       }
     } catch (err) {
       console.log(err);
-      window.alert(err.response.data);
+      swal({
+        title: "Thất bại!",
+        text: `${err.response.data}`,
+        icon: "warning",
+      });
       dispatch(createAction(DELETE_USER_FAILED, err));
     }
   };
@@ -146,11 +160,18 @@ export const actUpdateUserRequest = (data) => {
       });
 
       if (res.status === 200 || res.status === 201) {
-        swal("Thông báo!", "Cập nhật thành công !", "success");
+        swal({
+          title: "Cập nhật thành công!",
+          icon: "success",
+        });
         dispatch(createAction(UPDATE_USER_SUCCESS, res.data));
       }
     } catch (err) {
-      window.alert(err.response.data);
+      swal({
+        title: "Thất bại!",
+        text: `${err.response.data}`,
+        icon: "warning",
+      });
       dispatch(createAction(UPDATE_USER_FAILED, err));
     }
   };

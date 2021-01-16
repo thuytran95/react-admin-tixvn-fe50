@@ -11,6 +11,7 @@ import useStyles from "./style";
 import { connect } from "react-redux";
 import { Redirect, useHistory } from "react-router-dom";
 import { actLoginApi } from "../../redux/actions/user.action";
+import { Box } from "@material-ui/core";
 
 function Login(props) {
   // console.log(props);
@@ -32,7 +33,7 @@ function Login(props) {
     return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <div className={classes.paper} color="primary">
+        <Box className={classes.paper} color="primary">
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
@@ -74,7 +75,7 @@ function Login(props) {
               Đăng nhập
             </Button>
           </form>
-        </div>
+        </Box>
       </Container>
     );
   };
