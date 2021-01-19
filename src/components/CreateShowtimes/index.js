@@ -84,6 +84,7 @@ function CreateShowtimes({ maPhim, tenPhim }) {
 
   const listHeThongRapChieu =
     useSelector((state) => state?.movie?.infomatinShowTime) || "";
+  console.log(listHeThongRapChieu);
 
   useEffect(() => {
     dispatch(
@@ -320,7 +321,11 @@ function CreateShowtimes({ maPhim, tenPhim }) {
                 type="submit"
                 variant="contained"
                 color="primary"
-                style={{ fontSize: "10px" }}
+                style={{
+                  fontSize: "10px",
+                  marginTop: "20px",
+                  padding: "8px 10px",
+                }}
               >
                 Thêm lich chiếu
               </Button>

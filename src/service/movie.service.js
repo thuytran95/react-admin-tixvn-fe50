@@ -4,11 +4,11 @@ import * as yup from "yup";
 
 // schema to validate add movie
 export const movieSchema = yup.object().shape({
-  maPhim: yup.string().required("*Field is required"),
-  tenPhim: yup.string().required("*Field is required"),
-  biDanh: yup.string().required("*Field is required"),
-  trailer: yup.string().required("*Field is required"),
-  hinhAnh: yup.mixed().required("*Field is required").nullable(),
+  maPhim: yup.string().required("*Trường này bắt buộc nhập"),
+  tenPhim: yup.string().required("*Trường này bắt buộc nhập"),
+  biDanh: yup.string().required("*Trường này bắt buộc nhập"),
+  trailer: yup.string().required("*Trường này bắt buộc nhập"),
+  hinhAnh: yup.mixed().required("*Trường này bắt buộc nhập").nullable(),
   // .required("A file is required")
   // .test(
   //   "fileFormat",
@@ -16,19 +16,22 @@ export const movieSchema = yup.object().shape({
   //   (value) => value && SUPPORTED_FORMATS.includes(value.type)
   // ),
 
-  moTa: yup.string().required("*Field is required"),
-  ngayKhoiChieu: yup.date().required("*Field is required").nullable(),
-  danhGia: yup.number().integer().positive().default(0),
-  maNhom: yup.string().required("*Field is required"),
+  moTa: yup.string().required("*Trường này bắt buộc nhập"),
+  ngayKhoiChieu: yup.date().required("*Trường này bắt buộc nhập").nullable(),
+  danhGia: yup.number().integer().default(0),
+  maNhom: yup.string().required("*Trường này bắt buộc nhập"),
 });
 
 export const scheduleSchema = yup.object().shape({
-  maHeThongRap: yup.string().required("*Field is required"),
-  maCumRap: yup.string().required("*Field is required"),
-  maRap: yup.string().required("*Field is required"),
-  ngayChieuGioChieu: yup.date().required("*Field is required").nullable(),
-  thoiLuong: yup.number().required("*Field is required"),
-  giaVe: yup.number().required("*Field is required"),
+  maHeThongRap: yup.string().required("*Trường này bắt buộc nhập"),
+  maCumRap: yup.string().required("*Trường này bắt buộc nhập"),
+  maRap: yup.string().required("*Trường này bắt buộc nhập"),
+  ngayChieuGioChieu: yup
+    .date()
+    .required("*Trường này bắt buộc nhập")
+    .nullable(),
+  thoiLuong: yup.number().required("*Trường này bắt buộc nhập"),
+  giaVe: yup.number().required("*Trường này bắt buộc nhập"),
 });
 
 class MovieService {
@@ -60,7 +63,7 @@ class MovieService {
       url: `https://movie0706.cybersoft.edu.vn/api/QuanLyRap/LayThongTinCumRapTheoHeThong?maHeThongRap=${id}`,
     });
   }
-  getMovieSchedule(id){
+  getMovieSchedule(id) {
     return Axios({
       method: "GET",
       url: `https://movie0706.cybersoft.edu.vn/api/QuanLyPhim/LayThongTinPhim?MaPhim=${id}`,

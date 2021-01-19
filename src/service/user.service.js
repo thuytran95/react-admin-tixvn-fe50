@@ -3,16 +3,19 @@ import * as yup from "yup";
 
 // schema do minh tao ra de validation du lieu thu duoc tu form
 export const signUpUserSchema = yup.object().shape({
-  taiKhoan: yup.string().required("*Field is required"),
-  matKhau: yup.string().required("*Field is required"),
-  hoTen: yup.string().required("*Field is required"),
-  email: yup.string().required("*Field is required").email("*Email is invalid"),
+  taiKhoan: yup.string().required("*Trường này bắt buộc nhập"),
+  matKhau: yup.string().required("*Trường này bắt buộc nhập"),
+  hoTen: yup.string().required("*Trường này bắt buộc nhập"),
+  email: yup
+    .string()
+    .required("*Trường này bắt buộc nhập")
+    .email("*Email không hợp lệ"),
   soDt: yup
     .string()
-    .required("*Field is required")
+    .required("*Trường này bắt buộc nhập")
     .matches(/^[0-9]+$/), //viet bieu thuc chinh quy phai viet lien, khong co dau cach giua cac ky tu
-  maNhom: yup.string().required("*Field is required"),
-  maLoaiNguoiDung: yup.string().required("*Field is required"),
+  maNhom: yup.string().required("*Trường này bắt buộc nhập"),
+  maLoaiNguoiDung: yup.string().required("*Trường này bắt buộc nhập"),
 });
 
 class UserService {
