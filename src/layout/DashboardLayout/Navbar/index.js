@@ -14,6 +14,7 @@ import {
 import { AccountCircle, Movie } from "@material-ui/icons";
 
 import NavItem from "./NavItem";
+import { useSelector } from "react-redux";
 
 const user = {
   avatar: AccountCircle,
@@ -51,6 +52,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Navbar = (props) => {
+  const admin = useSelector((state) => state.user.admin);
   const { openMobile, onMobileClose } = props;
   const classes = useStyles();
   const location = useLocation();
@@ -70,7 +72,7 @@ const Navbar = (props) => {
             to="/users"
           />
           <Typography className={classes.name} color="textPrimary" variant="h5">
-            {user.name}
+            {admin ? admin.hoTen : user.name}
           </Typography>
         </Box>
         <Divider />

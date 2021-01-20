@@ -6,13 +6,10 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Button,
 } from "@material-ui/core";
 import ReactPaginate from "react-paginate";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
-import DeleteIcon from "@material-ui/icons/Delete";
-import { Pagination } from "@material-ui/lab";
 import React, { memo, useEffect, useState } from "react";
 import Toolbar from "../../pages/UserPage/Toolbar";
 import { useParams } from "react-router-dom";

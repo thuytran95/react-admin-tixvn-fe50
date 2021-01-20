@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Avatar, Typography } from "@material-ui/core";
 import { Error, Folder } from "@material-ui/icons";
-import Icon from "@material-ui/core/Icon";
 import withStyles from "@material-ui/core/styles/withStyles";
 import customImageInputStyle from "./CustomImageInputStyle";
 import classnames from "classnames";

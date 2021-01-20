@@ -9,12 +9,6 @@ export const movieSchema = yup.object().shape({
   biDanh: yup.string().required("*Trường này bắt buộc nhập"),
   trailer: yup.string().required("*Trường này bắt buộc nhập"),
   hinhAnh: yup.mixed().required("*Trường này bắt buộc nhập").nullable(),
-  // .required("A file is required")
-  // .test(
-  //   "fileFormat",
-  //   "Unsupported Format",
-  //   (value) => value && SUPPORTED_FORMATS.includes(value.type)
-  // ),
 
   moTa: yup.string().required("*Trường này bắt buộc nhập"),
   ngayKhoiChieu: yup.date().required("*Trường này bắt buộc nhập").nullable(),

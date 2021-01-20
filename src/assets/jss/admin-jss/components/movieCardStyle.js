@@ -3,6 +3,9 @@ import { colors } from "@material-ui/core";
 const movieCardStyle = (theme) => ({
   root: {
     overflow: "hidden",
+    "& .MuiButtonBase-root": {
+      outline: "none",
+    },
   },
   media: {
     height: 280,

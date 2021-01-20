@@ -11,24 +11,19 @@ import {
   Box,
 } from "@material-ui/core";
 import DateFnsUtils from "@date-io/date-fns";
-import StickyHeadTable from "../StickyHeadTable";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import {
   getShowScheduleInformation,
   getInformationByTheaterCluster,
-  createSchedule,
   actCreateMovieSchedule,
 } from "../../redux/actions/movie.action";
-import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  KeyboardDatePicker,
   KeyboardDateTimePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import { FormikTextField } from "../FormilkCustomLayout/FormikTextField";
 import { scheduleSchema } from "../../service/movie.service";
-// import StickyHeadTable from "../StickyHeadTable";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,14 +59,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ShowTimeSchema = Yup.object().shape({
-  // maHeThongRap: Yup.string().required("Required"),
-  // maCumRap: Yup.string().required("Required"),
-  maRap: Yup.string().required("Required"),
-  ngayChieuGioChieu: Yup.string().required("Required"),
-  thoiLuong: Yup.string().required("Required"),
-  giaVe: Yup.string().required("Required"),
-});
 function CreateShowtimes({ maPhim, tenPhim }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
@@ -84,7 +71,7 @@ function CreateShowtimes({ maPhim, tenPhim }) {
 
   const listHeThongRapChieu =
     useSelector((state) => state?.movie?.infomatinShowTime) || "";
-  console.log(listHeThongRapChieu);
+  // console.log(listHeThongRapChieu);
 
   useEffect(() => {
     dispatch(
