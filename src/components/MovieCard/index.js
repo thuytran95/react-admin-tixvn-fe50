@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import clsx from "clsx";
 import {
   Card,
@@ -50,88 +50,90 @@ const MovieCard = (props) => {
 
   const classes = useStyles();
   return (
-    <Card className={clsx(classes.root, className)}>
-      <CardActionArea>
-        <CardMedia className={classes.media} image={hinhAnh} title={moTa} />
-        <CardContent className={classes.root}>
-          <Typography
-            className={classes.typography_h2}
-            gutterBottom
-            variant="h4"
-          >
-            {capitalizeWords(tenPhim)}
-          </Typography>
+    <>
+      <Card className={clsx(classes.root, className)}>
+        <CardActionArea>
+          <CardMedia className={classes.media} image={hinhAnh} title={moTa} />
+          <CardContent className={classes.root}>
+            <Typography
+              className={classes.typography_h2}
+              gutterBottom
+              variant="h4"
+            >
+              {capitalizeWords(tenPhim)}
+            </Typography>
 
-          <Typography
-            className={classes.typography}
-            variant="subtitle1"
-            component="p"
-          >
-            Ngày khởi chiếu: {format("dd-MM-yyyy", new Date(ngayKhoiChieu))}
-          </Typography>
-          <Typography
-            style={{ marginBottom: "10px" }}
-            className={classes.typography}
-            variant="subtitle1"
-            component="p"
-          >
-            Đánh giá: {danhGia}
-          </Typography>
+            <Typography
+              className={classes.typography}
+              variant="subtitle1"
+              component="p"
+            >
+              Ngày khởi chiếu: {format("dd-MM-yyyy", new Date(ngayKhoiChieu))}
+            </Typography>
+            <Typography
+              style={{ marginBottom: "10px" }}
+              className={classes.typography}
+              variant="subtitle1"
+              component="p"
+            >
+              Đánh giá: {danhGia}
+            </Typography>
 
-          <Typography
-            className={classes.description}
-            variant="body2"
-            color="textSecondary"
-            component="p"
-            gutterBottom
-          >
-            {moTa}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-      <CardActions className={classes.cardActions}>
-        <CreateShowtimes maPhim={maPhim} maNhom={maNhom} tenPhim={tenPhim} />
-        <Button style={{ fontSize: "10px", outline: "none", border: "none" }}>
-          <Link
-            style={{
-              textDecoration: "none",
-              color: colors.amber[500],
-              lineHeight: "unset",
+            <Typography
+              className={classes.description}
+              variant="body2"
+              color="textSecondary"
+              component="p"
+              gutterBottom
+            >
+              {moTa}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+        <CardActions className={classes.cardActions}>
+          <CreateShowtimes maPhim={maPhim} maNhom={maNhom} tenPhim={tenPhim} />
+          <Button style={{ fontSize: "10px", outline: "none", border: "none" }}>
+            <Link
+              style={{
+                textDecoration: "none",
+                color: colors.amber[500],
+                lineHeight: "unset",
+              }}
+              to={`/showschedule/${maPhim}`}
+            >
+              <ScheduleIcon />
+            </Link>
+          </Button>
+          <Button
+            size="small"
+            color="primary"
+            onClick={() => {
+              setInitialValues(movie);
+              setTitleModal({
+                header: "Cập nhật thông tin phim",
+                action: "Cập nhật",
+              });
+              setImage(hinhAnh);
+              setOpen(true);
             }}
-            to={`/showschedule/${maPhim}`}
           >
-            <ScheduleIcon />
-          </Link>
-        </Button>
-        <Button
-          size="small"
-          color="primary"
-          onClick={() => {
-            setInitialValues(movie);
-            setTitleModal({
-              header: "Cập nhật thông tin phim",
-              action: "Cập nhật",
-            });
-            setImage(hinhAnh);
-            setOpen(true);
-          }}
-        >
-          <CreateIcon />
-        </Button>
+            <CreateIcon />
+          </Button>
 
-        <Button
-          className={classes.deleteIcon}
-          style={{ marginLeft: 0 }}
-          size="small"
-          onClick={() => {
-            console.log(maPhim);
-            handleDelete(maPhim);
-          }}
-        >
-          <DeleteIcon />
-        </Button>
-      </CardActions>
-    </Card>
+          <Button
+            className={classes.deleteIcon}
+            style={{ marginLeft: 0 }}
+            size="small"
+            onClick={() => {
+              console.log(maPhim);
+              handleDelete(maPhim);
+            }}
+          >
+            <DeleteIcon />
+          </Button>
+        </CardActions>
+      </Card>
+    </>
   );
 };
 

@@ -130,6 +130,7 @@ export const actUpdateMovieRequest = (data) => {
     }
   };
 };
+
 export const getShowScheduleInformation = (callback, errorCallback) => {
   return (dispatch) => {
     movieService

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect, useDispatch } from "react-redux";
-import { Formik, Form } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Loader } from "../../components/Loader";
 import {
   actAddUserRequest,
@@ -192,6 +192,7 @@ function UserPage(props) {
                                 page * rowsPerPage + rowsPerPage
                               )
                               .map((user, index) => {
+                                console.log(user);
                                 const {
                                   taiKhoan,
                                   matKhau,
@@ -201,6 +202,7 @@ function UserPage(props) {
                                   maNhom,
                                   maLoaiNguoiDung,
                                 } = user;
+                                // console.log(maNhom);
                                 if (!maNhom) {
                                   user.maNhom = "GP01";
                                 }
@@ -227,15 +229,7 @@ function UserPage(props) {
                                               "Cập nhật thông tin người dùng",
                                             action: "Cập nhật",
                                           });
-                                          setInitialValue({
-                                            taiKhoan,
-                                            matKhau,
-                                            hoTen,
-                                            soDt,
-                                            maNhom,
-                                            email,
-                                            maLoaiNguoiDung,
-                                          });
+                                          setInitialValue(user);
                                           setOpen(true);
                                         }}
                                       />
@@ -283,15 +277,7 @@ function UserPage(props) {
                                             "Cập nhật thông tin người dùng",
                                           action: "Cập nhật",
                                         });
-                                        setInitialValue({
-                                          taiKhoan,
-                                          matKhau,
-                                          hoTen,
-                                          soDt,
-                                          maNhom,
-                                          email,
-                                          maLoaiNguoiDung,
-                                        });
+                                        setInitialValue(user);
                                         setOpen(true);
                                       }}
                                     />
@@ -407,14 +393,36 @@ function UserPage(props) {
                   label="Mã loại người dùng"
                   required
                 />
-                <FormikSelect
-                  onChange={formikProps.handleChange}
-                  name="maNhom"
-                  items={dataSelect}
-                  label="Mã nhóm"
-                  required
-                  value={initialValue.maNhom}
-                />
+                <Grid item xs={12}>
+                  <div className="form-group text-left">
+                    <label>Mã nhóm:</label>
+                    <Field
+                      as="select"
+                      className="form-control"
+                      name="maNhom"
+                      onChange={formikProps.handleChange}
+                    >
+                      <option>GP01</option>
+                      <option>GP02</option>
+                      <option>GP03</option>
+                      <option>GP04</option>
+                      <option>GP05</option>
+                      <option>GP06</option>
+                      <option>GP07</option>
+                      <option>GP08</option>
+                      <option>GP09</option>
+                      <option>GP10</option>
+                    </Field>
+                    <ErrorMessage name="maNhom">
+                      {(message) => (
+                        <div className="alert text-danger alert-validation ">
+                          {message}
+                        </div>
+                      )}
+                    </ErrorMessage>
+                  </div>
+                </Grid>
+
                 <>
                   {titleModal.action === "Thêm" ? (
                     <div className={classes.buttonGroup}>

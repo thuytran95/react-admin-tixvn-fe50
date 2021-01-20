@@ -51,7 +51,7 @@ class CustomImageInput extends Component {
     if (errorMessage) {
       comp = <Error style={{ fontSize: 36 }} />;
     } else if (file) {
-      console.log(imagePreviewUrl);
+      // console.log(imagePreviewUrl);
       comp = (
         <img className={classes.avatarThumb} src={imagePreviewUrl} alt="Phim" />
       );
@@ -73,7 +73,6 @@ class CustomImageInput extends Component {
       this.state.file ? [classes.whiteBack] : [classes.primaryBack],
       { [classes.errorBack]: errorMessage }
     );
-    console.log(image);
 
     return (
       <div className={classes.container}>

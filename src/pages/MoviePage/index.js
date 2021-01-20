@@ -117,9 +117,7 @@ const MoviePage = (props) => {
   };
 
   const handleUpdate = (values) => {
-    // const newValues = { ...values, hinhAnh: null };
-    // console.log(newValues);
-    console.log(values);
+    // console.log(values);
     const newValue = { ...values };
     for (let key in values) {
       if (key === "ngayKhoiChieu") {
